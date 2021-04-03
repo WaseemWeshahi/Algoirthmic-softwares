@@ -1,0 +1,12 @@
+The problem had 19 jobs that needed to be scheduled on 3 machines.
+The found solution:
+m1 : J15(4, 3), J4(13, 3), J9(13, 3), J11(16, 3), J2(5, 5) 	 sum: 51, types: 3, 5
+m2 : J14(2, 1), J1(4, 1), J7(8, 1), J19(9, 1), J18(11, 1), J5(3, 4), J16(5, 4), J8(9, 4) 	 sum: 51, types: 1, 4
+m3 : J6(7, 2), J12(8, 2), J17(8, 2), J3(10, 3), J13(7, 5), J10(8, 5) 	 sum: 48, types: 2, 3, 5
+
+Objective function's value: max{51, 51, 48} = 51
+*Lower bound (not necessarily tight): 50
+
+**output format:
+	m_k is the k'th machine.
+	J_i(P, T) is the i'th job with P processing time and is of type T.
