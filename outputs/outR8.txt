@@ -1,0 +1,12 @@
+The problem had 40 jobs that needed to be scheduled on 3 machines.
+The found solution:
+m1 : J4(8, 2), J23(2, 3), J22(3, 3), J14(4, 3), J24(6, 3), J37(6, 3), J34(9, 3), J16(10, 3), J26(13, 3), J35(14, 3), J8(18, 3), J40(18, 3), J10(20, 5) 	 sum: 131, types: 2, 3, 5
+m2 : J32(1, 1), J18(2, 1), J39(7, 1), J20(10, 1), J21(10, 1), J3(11, 1), J9(13, 1), J36(1, 4), J28(5, 4), J27(6, 4), J19(12, 4), J31(14, 4), J7(18, 4), J2(20, 4) 	 sum: 130, types: 1, 4
+m3 : J33(4, 2), J12(5, 2), J25(5, 2), J13(7, 2), J29(8, 2), J30(15, 2), J1(19, 2), J15(20, 2), J6(4, 4), J5(8, 5), J11(10, 5), J17(13, 5), J38(13, 5) 	 sum: 131, types: 2, 4, 5
+
+Objective function's value: max{131, 130, 131} = 131
+*Lower bound (not necessarily tight): 131
+
+**output format:
+	m_k is the k'th machine.
+	J_i(P, T) is the i'th job with P processing time and is of type T.

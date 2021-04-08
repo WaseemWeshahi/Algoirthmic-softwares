@@ -123,16 +123,38 @@ def create_greedy_solution(jobs):
 
   return naive_assignment, Solution(naive_assignment)
 
+def cart_squared(list):
+  return [(i,j) for i in list for j in list]
+
 def get_best_neighbour(assigned_jobs):
   best_assignment = deep_copy_job_list(assigned_jobs)
   best_time = Solution(assigned_jobs).finishing_time()
   print('finding best neighbour for the assignment:')
   print(Solution(assigned_jobs))
+  '''
   for i in range(len(assigned_jobs)):
     print('altering J%d' % (i+1))
     for machine_ind in range(num_machines):
       possible_assignment = deep_copy_job_list(best_assignment)
       possible_assignment[i].mach = machine_ind
+      possible_sol = Solution(possible_assignment)
+      print('checking solution:')
+      print(possible_sol)
+      print('Value: %d, valid? %r' % (possible_sol.finishing_time(), possible_sol.is_valid()))
+
+      if possible_sol.is_valid() and possible_sol.finishing_time() < best_time:
+        print('found better solution with %d time' % best_time)
+        best_assignment = deep_copy_job_list(possible_assignment)
+        best_time = possible_sol.finishing_time()
+    '''
+  #import pdb;pdb.set_trace()
+  for i, j in cart_squared(range(len(assigned_jobs))):
+    print('look J%d with J%d' % ((i+1),(j+1)))
+    for machine_ind1, machine_ind2 in cart_squared(range(num_machines)):
+      possible_assignment = deep_copy_job_list(best_assignment)
+      possible_assignment[i].mach = machine_ind1
+      possible_assignment[j].mach = machine_ind2
+
       possible_sol = Solution(possible_assignment)
       print('checking solution:')
       print(possible_sol)
@@ -151,7 +173,6 @@ def hill_climb(jobs):
   start with an arbitrary solution, then try to check the neighbouring solutions and
   iteratively head towards the best neighbour.
   '''
-  import pdb;pdb.set_trace()
   init_jobs, init_sol = create_naive_solution(jobs)
   #init_jobs, init_sol = create_greedy_solution(jobs)
 
