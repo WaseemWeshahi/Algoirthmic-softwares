@@ -153,7 +153,7 @@ def get_best_neighbour(assigned_jobs):
         print('found better solution with %d time' % best_time)
         best_assignment = deep_copy_job_list(possible_assignment)
         best_time = possible_sol.finishing_time()
-        #return best_assignment, best_time
+        return best_assignment, best_time
 
   #import pdb;pdb.set_trace()
   # Switches
@@ -180,7 +180,7 @@ def get_best_neighbour(assigned_jobs):
         print('found better solution with %d time' % best_time)
         best_assignment = deep_copy_job_list(possible_assignment)
         best_time = possible_sol.finishing_time()
-        #return best_assignment, best_time
+        return best_assignment, best_time
 
   return best_assignment, best_time
 
