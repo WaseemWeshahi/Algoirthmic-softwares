@@ -14,6 +14,10 @@ orig_jobs = []
 
 num_jobs = 0
 
+log = ''
+
+num_iterations = 0
+
 def get_id():
   global num_jobs
   num_jobs += 1
@@ -96,6 +100,14 @@ def lower_bound(jobs):
   proc_times = [j.proc_time for j in jobs]
   times_sum = sum(proc_times)
   return max(proc_times + [math.ceil(times_sum/num_machines)])
+
+def get_diff(old_assignment, new_assignment):
+  diff_indices = [ind if old_assignment[ind].mach != new_assignment[ind].mach else None for ind in range(len(new_assignment))]
+  diff_indices = list(filter(None, diff_indices))
+
+  diff_str = ', '.join(['%s: %d->%d' % (new_assignment[ind], old_assignment[ind].mach+1, new_assignment[ind].mach+1) for ind in diff_indices])
+  return 'Obtained a new solution by moving: ' + diff_str + '\nNew machine finishing times: {%s}\n' % format_list(Solution(new_assignment).finishing_times())
+
 
 def create_naive_solution(jobs):
   '''
@@ -190,7 +202,9 @@ def hill_climb(jobs):
   start with an arbitrary solution, then try to check the neighbouring solutions and
   iteratively head towards the best neighbour.
   '''
+  global log, num_iterations
   init_jobs, init_sol = create_naive_solution(jobs)
+  log += 'Initial solution:\n%s\n' % init_sol
   #init_jobs, init_sol = create_greedy_solution(jobs)
 
   if not init_sol.is_valid():
@@ -208,6 +222,8 @@ def hill_climb(jobs):
       get_best_neighbour(best_assignment)
 
     if best_neighbour_time < best_time:
+      log += '*****************************************\n%s' % (get_diff(best_assignment, best_neighbout_assignment))
+      num_iterations += 1
       best_assignment = best_neighbout_assignment
       best_time = best_neighbour_time
       print('found better assignment with time: %d' % best_time)
@@ -242,17 +258,21 @@ def handle_file(filepath):
 
   return current_jobs
 
-def output_solution(solution):
+def output_solution(sol):
   '''
   Output the solution to the specified file
   '''
+  global log
   output = ''
   if not sol:
     output = 'There is no solution for such input!'
     return output
 
   output += 'The problem had %d jobs that needed to be scheduled on %d machines.\n' % (num_jobs, num_machines)
-  output += 'The found solution:\n'
+  output += log
+  output += '-----------------------------------------\n'
+  output += 'Overall number of iterations: %d\n' % num_iterations
+  output += 'The final solution:\n'
   output += '%s' % sol
   output += '\n'
   output += '\nObjective function\'s value: max{%s} = %d\n' % (format_list(sol.finishing_times()), sol.finishing_time())

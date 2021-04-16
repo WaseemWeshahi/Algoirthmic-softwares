@@ -1,5 +1,23 @@
 The problem had 40 jobs that needed to be scheduled on 3 machines.
-The found solution:
+Initial solution:
+m1 : J23(2, 3), J22(3, 3), J14(4, 3), J24(6, 3), J37(6, 3), J34(9, 3), J16(10, 3), J26(13, 3), J35(14, 3), J8(18, 3), J40(18, 3) 	 sum: 103, types: 3
+m2 : J32(1, 1), J18(2, 1), J39(7, 1), J20(10, 1), J21(10, 1), J3(11, 1), J9(13, 1), J36(1, 4), J6(4, 4), J28(5, 4), J27(6, 4), J19(12, 4), J31(14, 4), J7(18, 4), J2(20, 4) 	 sum: 134, types: 1, 4
+m3 : J33(4, 2), J12(5, 2), J25(5, 2), J13(7, 2), J4(8, 2), J29(8, 2), J30(15, 2), J1(19, 2), J15(20, 2), J5(8, 5), J11(10, 5), J17(13, 5), J38(13, 5), J10(20, 5) 	 sum: 155, types: 2, 5
+*****************************************
+Obtained a new solution by moving: 
+New machine finishing times: {122, 134, 136}
+*****************************************
+Obtained a new solution by moving: J4(8, 2): 3->1
+New machine finishing times: {130, 134, 128}
+*****************************************
+Obtained a new solution by moving: J6(4, 4): 2->3
+New machine finishing times: {130, 130, 132}
+*****************************************
+Obtained a new solution by moving: J10(20, 5): 3->1
+New machine finishing times: {131, 130, 131}
+-----------------------------------------
+Overall number of iterations: 4
+The final solution:
 m1 : J4(8, 2), J23(2, 3), J22(3, 3), J14(4, 3), J24(6, 3), J37(6, 3), J34(9, 3), J16(10, 3), J26(13, 3), J35(14, 3), J8(18, 3), J40(18, 3), J10(20, 5) 	 sum: 131, types: 2, 3, 5
 m2 : J32(1, 1), J18(2, 1), J39(7, 1), J20(10, 1), J21(10, 1), J3(11, 1), J9(13, 1), J36(1, 4), J28(5, 4), J27(6, 4), J19(12, 4), J31(14, 4), J7(18, 4), J2(20, 4) 	 sum: 130, types: 1, 4
 m3 : J33(4, 2), J12(5, 2), J25(5, 2), J13(7, 2), J29(8, 2), J30(15, 2), J1(19, 2), J15(20, 2), J6(4, 4), J5(8, 5), J11(10, 5), J17(13, 5), J38(13, 5) 	 sum: 131, types: 2, 4, 5

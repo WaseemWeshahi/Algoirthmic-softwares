@@ -1,5 +1,47 @@
 The problem had 40 jobs that needed to be scheduled on 3 machines.
-The found solution:
+Initial solution:
+m1 : J5(6, 3), J35(11, 3), J24(14, 3), J33(16, 3), J1(18, 3) 	 sum: 65, types: 3
+m2 : J25(1, 1), J29(1, 1), J18(3, 1), J38(7, 1), J3(10, 1), J20(12, 1), J36(13, 1), J2(18, 1), J23(19, 1), J8(20, 1), J39(20, 1), J6(3, 4), J17(5, 4), J32(9, 4), J30(10, 4), J4(11, 4), J14(11, 4), J28(15, 4), J31(18, 4), J12(19, 4) 	 sum: 225, types: 1, 4
+m3 : J26(1, 2), J27(2, 2), J15(4, 2), J34(6, 2), J40(6, 2), J9(7, 2), J16(8, 2), J22(12, 2), J19(1, 5), J7(4, 5), J21(4, 5), J37(4, 5), J13(5, 5), J10(11, 5), J11(16, 5) 	 sum: 91, types: 2, 5
+*****************************************
+Obtained a new solution by moving: J2(18, 1): 2->1
+New machine finishing times: {83, 207, 91}
+*****************************************
+Obtained a new solution by moving: J3(10, 1): 2->1
+New machine finishing times: {93, 197, 91}
+*****************************************
+Obtained a new solution by moving: J4(11, 4): 2->1
+New machine finishing times: {104, 186, 91}
+*****************************************
+Obtained a new solution by moving: J6(3, 4): 2->1
+New machine finishing times: {107, 183, 91}
+*****************************************
+Obtained a new solution by moving: J8(20, 1): 2->1
+New machine finishing times: {127, 163, 91}
+*****************************************
+Obtained a new solution by moving: J12(19, 4): 2->1
+New machine finishing times: {146, 144, 91}
+*****************************************
+Obtained a new solution by moving: 
+New machine finishing times: {128, 144, 109}
+*****************************************
+Obtained a new solution by moving: J14(11, 4): 2->1
+New machine finishing times: {139, 133, 109}
+*****************************************
+Obtained a new solution by moving: J5(6, 3): 1->3
+New machine finishing times: {133, 133, 115}
+*****************************************
+Obtained a new solution by moving: J17(5, 4): 2->1, J24(14, 3): 1->3
+New machine finishing times: {124, 128, 129}
+*****************************************
+Obtained a new solution by moving: J33(16, 3): 1->3
+New machine finishing times: {126, 128, 127}
+*****************************************
+Obtained a new solution by moving: J25(1, 1): 2->1
+New machine finishing times: {127, 127, 127}
+-----------------------------------------
+Overall number of iterations: 12
+The final solution:
 m1 : J25(1, 1), J3(10, 1), J2(18, 1), J8(20, 1), J35(11, 3), J1(18, 3), J6(3, 4), J17(5, 4), J4(11, 4), J14(11, 4), J12(19, 4) 	 sum: 127, types: 1, 3, 4
 m2 : J29(1, 1), J18(3, 1), J38(7, 1), J20(12, 1), J36(13, 1), J23(19, 1), J39(20, 1), J32(9, 4), J30(10, 4), J28(15, 4), J31(18, 4) 	 sum: 127, types: 1, 4
 m3 : J26(1, 2), J27(2, 2), J15(4, 2), J34(6, 2), J40(6, 2), J9(7, 2), J16(8, 2), J22(12, 2), J5(6, 3), J24(14, 3), J33(16, 3), J19(1, 5), J7(4, 5), J21(4, 5), J37(4, 5), J13(5, 5), J10(11, 5), J11(16, 5) 	 sum: 127, types: 2, 3, 5
