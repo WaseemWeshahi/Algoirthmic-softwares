@@ -127,43 +127,60 @@ def cart_squared(list):
   return [(i,j) for i in list for j in list]
 
 def get_best_neighbour(assigned_jobs):
+  '''
+  not necessarily best!?
+  '''
   best_assignment = deep_copy_job_list(assigned_jobs)
   best_time = Solution(assigned_jobs).finishing_time()
   print('finding best neighbour for the assignment:')
   print(Solution(assigned_jobs))
-  '''
+
+  # Replacements
   for i in range(len(assigned_jobs)):
     print('altering J%d' % (i+1))
     for machine_ind in range(num_machines):
       possible_assignment = deep_copy_job_list(best_assignment)
+      orig_mach = possible_assignment[i].mach
       possible_assignment[i].mach = machine_ind
       possible_sol = Solution(possible_assignment)
       print('checking solution:')
       print(possible_sol)
       print('Value: %d, valid? %r' % (possible_sol.finishing_time(), possible_sol.is_valid()))
 
+      #if possible_sol.is_valid() and (max(possible_sol.machines[orig_mach], possible_sol.machines[machine_ind]) \
+      # < max(Solution(best_assignment).machines[orig_mach], Solution(best_assignment).machines[machine_ind])):
       if possible_sol.is_valid() and possible_sol.finishing_time() < best_time:
         print('found better solution with %d time' % best_time)
         best_assignment = deep_copy_job_list(possible_assignment)
         best_time = possible_sol.finishing_time()
-    '''
+        #return best_assignment, best_time
+
   #import pdb;pdb.set_trace()
+  # Switches
   for i, j in cart_squared(range(len(assigned_jobs))):
     print('look J%d with J%d' % ((i+1),(j+1)))
     for machine_ind1, machine_ind2 in cart_squared(range(num_machines)):
       possible_assignment = deep_copy_job_list(best_assignment)
+      orig_mach1 = possible_assignment[i].mach
+      orig_mach2 = possible_assignment[j].mach
       possible_assignment[i].mach = machine_ind1
       possible_assignment[j].mach = machine_ind2
+
+      involved_machines = [orig_mach1, orig_mach2, machine_ind1, machine_ind2]
 
       possible_sol = Solution(possible_assignment)
       print('checking solution:')
       print(possible_sol)
       print('Value: %d, valid? %r' % (possible_sol.finishing_time(), possible_sol.is_valid()))
 
+      new_val = max([possible_sol.machines[mach] for mach in involved_machines])
+      old_val = max([Solution(best_assignment).machines[mach] for mach in involved_machines])
+      #if possible_sol.is_valid() and new_val < old_val:
       if possible_sol.is_valid() and possible_sol.finishing_time() < best_time:
         print('found better solution with %d time' % best_time)
         best_assignment = deep_copy_job_list(possible_assignment)
         best_time = possible_sol.finishing_time()
+        #return best_assignment, best_time
 
   return best_assignment, best_time
 
