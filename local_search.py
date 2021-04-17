@@ -102,8 +102,7 @@ def lower_bound(jobs):
   return max(proc_times + [math.ceil(times_sum/num_machines)])
 
 def get_diff(old_assignment, new_assignment):
-  diff_indices = [ind if old_assignment[ind].mach != new_assignment[ind].mach else None for ind in range(len(new_assignment))]
-  diff_indices = list(filter(None, diff_indices))
+  diff_indices = [ind for ind in range(num_jobs) if old_assignment[ind].mach != new_assignment[ind].mach]
 
   diff_str = ', '.join(['%s: %d->%d' % (new_assignment[ind], old_assignment[ind].mach+1, new_assignment[ind].mach+1) for ind in diff_indices])
   return 'Obtained a new solution by moving: ' + diff_str + '\nNew machine finishing times: {%s}\n' % format_list(Solution(new_assignment).finishing_times())
@@ -129,7 +128,6 @@ def create_greedy_solution(jobs):
   types_2_machines = {1 : 1, 2 : 2, 3 : 0, 4 : 1, 5 : 0}
   lengths = [sum([j.proc_time if j.t == _type else 0 for j in jobs]) for _type in [1, 2, 3, 4, 5]]
   types_2_lengths = dict(zip([1, 2, 3, 4, 5], lengths))
-  #import pdb;pdb.set_trace()
   for i, job in enumerate(jobs):
     naive_assignment[i].mach = types_2_machines[job.t]
 
@@ -148,7 +146,7 @@ def get_best_neighbour(assigned_jobs):
   print(Solution(assigned_jobs))
 
   # Replacements
-  for i in range(len(assigned_jobs)):
+  for i in range(num_jobs):
     print('altering J%d' % (i+1))
     for machine_ind in range(num_machines):
       possible_assignment = deep_copy_job_list(best_assignment)
@@ -159,17 +157,18 @@ def get_best_neighbour(assigned_jobs):
       print(possible_sol)
       print('Value: %d, valid? %r' % (possible_sol.finishing_time(), possible_sol.is_valid()))
 
-      #if possible_sol.is_valid() and (max(possible_sol.machines[orig_mach], possible_sol.machines[machine_ind]) \
-      # < max(Solution(best_assignment).machines[orig_mach], Solution(best_assignment).machines[machine_ind])):
-      if possible_sol.is_valid() and possible_sol.finishing_time() < best_time:
+      involved_machines = [orig_mach, machine_ind]
+      new_val = max([possible_sol.finishing_times()[mach] for mach in involved_machines])
+      old_val = max([Solution(best_assignment).finishing_times()[mach] for mach in involved_machines])
+      if possible_sol.is_valid() and new_val < old_val:
+      #if possible_sol.is_valid() and possible_sol.finishing_time() < best_time:
         print('found better solution with %d time' % best_time)
         best_assignment = deep_copy_job_list(possible_assignment)
         best_time = possible_sol.finishing_time()
-        return best_assignment, best_time
+        return best_assignment, best_time, involved_machines
 
-  #import pdb;pdb.set_trace()
   # Switches
-  for i, j in cart_squared(range(len(assigned_jobs))):
+  for i, j in cart_squared(range(num_jobs)):
     print('look J%d with J%d' % ((i+1),(j+1)))
     for machine_ind1, machine_ind2 in cart_squared(range(num_machines)):
       possible_assignment = deep_copy_job_list(best_assignment)
@@ -185,16 +184,16 @@ def get_best_neighbour(assigned_jobs):
       print(possible_sol)
       print('Value: %d, valid? %r' % (possible_sol.finishing_time(), possible_sol.is_valid()))
 
-      new_val = max([possible_sol.machines[mach] for mach in involved_machines])
-      old_val = max([Solution(best_assignment).machines[mach] for mach in involved_machines])
-      #if possible_sol.is_valid() and new_val < old_val:
-      if possible_sol.is_valid() and possible_sol.finishing_time() < best_time:
+      new_val = max([possible_sol.finishing_times()[mach] for mach in involved_machines])
+      old_val = max([Solution(best_assignment).finishing_times()[mach] for mach in involved_machines])
+      if possible_sol.is_valid() and new_val < old_val:
+      #if possible_sol.is_valid() and possible_sol.finishing_time() < best_time:
         print('found better solution with %d time' % best_time)
         best_assignment = deep_copy_job_list(possible_assignment)
         best_time = possible_sol.finishing_time()
-        return best_assignment, best_time
+        return best_assignment, best_time, involved_machines
 
-  return best_assignment, best_time
+  return best_assignment, best_time, [x for x in range(num_machines)]
 
 def hill_climb(jobs):
   '''
@@ -218,13 +217,15 @@ def hill_climb(jobs):
   changed = True
   while changed and best_time > lp:
     changed = False
-    best_neighbout_assignment, best_neighbour_time = \
+    best_neighbour_assignment, best_neighbour_time, involved_machines = \
       get_best_neighbour(best_assignment)
 
-    if best_neighbour_time < best_time:
-      log += '*****************************************\n%s' % (get_diff(best_assignment, best_neighbout_assignment))
+    new_val = max([Solution(best_neighbour_assignment).finishing_times()[mach] for mach in involved_machines])
+    old_val = max([Solution(best_assignment).finishing_times()[mach] for mach in involved_machines])
+    if new_val < old_val:
+      log += '*****************************************\n%s' % (get_diff(best_assignment, best_neighbour_assignment))
       num_iterations += 1
-      best_assignment = best_neighbout_assignment
+      best_assignment = best_neighbour_assignment
       best_time = best_neighbour_time
       print('found better assignment with time: %d' % best_time)
       changed = True
@@ -292,4 +293,3 @@ if __name__ == '__main__':
   out = open(output_file, 'w', encoding="utf8")
   out.write(output)
   out.close()
-  #import pdb;pdb.set_trace()
