@@ -9,6 +9,8 @@ input_file = sys.argv[1]
 output_file = sys.argv[2]
 # Number of machines
 num_machines = 0
+# Number of maximum types
+num_types = 5
 # Original copy
 orig_jobs = []
 
@@ -136,6 +138,12 @@ def create_greedy_solution(jobs):
 def cart_squared(list):
   return [(i,j) for i in list for j in list]
 
+def cart_cubed(list):
+  return [(i,j,k) for i in list for j in list for k in list]
+
+def cart_quart(list):
+  return [(i,j,k,l) for i in list for j in list for k in list for l in list]
+
 def get_best_neighbour(assigned_jobs):
   '''
   not necessarily best!?
@@ -153,45 +161,87 @@ def get_best_neighbour(assigned_jobs):
       orig_mach = possible_assignment[i].mach
       possible_assignment[i].mach = machine_ind
       possible_sol = Solution(possible_assignment)
-      print('checking solution:')
-      print(possible_sol)
-      print('Value: %d, valid? %r' % (possible_sol.finishing_time(), possible_sol.is_valid()))
 
       involved_machines = [orig_mach, machine_ind]
       new_val = max([possible_sol.finishing_times()[mach] for mach in involved_machines])
       old_val = max([Solution(best_assignment).finishing_times()[mach] for mach in involved_machines])
       if possible_sol.is_valid() and new_val < old_val:
-      #if possible_sol.is_valid() and possible_sol.finishing_time() < best_time:
-        print('found better solution with %d time' % best_time)
         best_assignment = deep_copy_job_list(possible_assignment)
         best_time = possible_sol.finishing_time()
         return best_assignment, best_time, involved_machines
 
   # Switches
   for i, j in cart_squared(range(num_jobs)):
-    print('look J%d with J%d' % ((i+1),(j+1)))
+    print('look at J%d with J%d' % ((i+1),(j+1)))
     for machine_ind1, machine_ind2 in cart_squared(range(num_machines)):
       possible_assignment = deep_copy_job_list(best_assignment)
       orig_mach1 = possible_assignment[i].mach
       orig_mach2 = possible_assignment[j].mach
+
       possible_assignment[i].mach = machine_ind1
       possible_assignment[j].mach = machine_ind2
 
       involved_machines = [orig_mach1, orig_mach2, machine_ind1, machine_ind2]
 
       possible_sol = Solution(possible_assignment)
-      print('checking solution:')
-      print(possible_sol)
-      print('Value: %d, valid? %r' % (possible_sol.finishing_time(), possible_sol.is_valid()))
 
       new_val = max([possible_sol.finishing_times()[mach] for mach in involved_machines])
       old_val = max([Solution(best_assignment).finishing_times()[mach] for mach in involved_machines])
       if possible_sol.is_valid() and new_val < old_val:
-      #if possible_sol.is_valid() and possible_sol.finishing_time() < best_time:
-        print('found better solution with %d time' % best_time)
         best_assignment = deep_copy_job_list(possible_assignment)
         best_time = possible_sol.finishing_time()
         return best_assignment, best_time, involved_machines
+
+  # Triple switches
+  for i, j, k in cart_cubed(range(num_jobs)):
+    print('look at J%d with J%d and J%d' % ((i+1),(j+1),(k+1)))
+    for machine_ind1, machine_ind2, machine_ind3 in cart_cubed(range(num_machines)):
+      possible_assignment = deep_copy_job_list(best_assignment)
+      orig_mach1 = possible_assignment[i].mach
+      orig_mach2 = possible_assignment[j].mach
+      orig_mach3 = possible_assignment[k].mach
+
+      possible_assignment[i].mach = machine_ind1
+      possible_assignment[j].mach = machine_ind2
+      possible_assignment[k].mach = machine_ind3
+
+      involved_machines = [orig_mach1, orig_mach2, orig_mach3, machine_ind1, machine_ind2, machine_ind3]
+
+      possible_sol = Solution(possible_assignment)
+
+      new_val = max([possible_sol.finishing_times()[mach] for mach in involved_machines])
+      old_val = max([Solution(best_assignment).finishing_times()[mach] for mach in involved_machines])
+      if possible_sol.is_valid() and new_val < old_val:
+        best_assignment = deep_copy_job_list(possible_assignment)
+        best_time = possible_sol.finishing_time()
+        return best_assignment, best_time, involved_machines
+
+  # Type-machine switches
+  for t1, t2 in cart_squared(range(num_types)):
+    print('switching types t%d with t%d' % ((t1+1),(t1+1)))
+    for src1, src2, dst1, dst2 in cart_quart(range(num_machines)):
+      possible_assignment = deep_copy_job_list(best_assignment)
+
+      indices1 = [ind for ind in range(num_jobs) if possible_assignment[ind].t == t1 and possible_assignment[ind].mach == src1]
+      indices2 = [ind for ind in range(num_jobs) if possible_assignment[ind].t == t2 and possible_assignment[ind].mach == src2]
+
+      for ind in indices1:
+        possible_assignment[ind].mach = dst1
+
+      for ind in indices2:
+        possible_assignment[ind].mach = dst2
+
+      involved_machines = [src1, src2, dst1, dst2]
+
+      possible_sol = Solution(possible_assignment)
+
+      new_val = max([possible_sol.finishing_times()[mach] for mach in involved_machines])
+      old_val = max([Solution(best_assignment).finishing_times()[mach] for mach in involved_machines])
+      if possible_sol.is_valid() and new_val < old_val:
+        best_assignment = deep_copy_job_list(possible_assignment)
+        best_time = possible_sol.finishing_time()
+        return best_assignment, best_time, involved_machines
+
 
   return best_assignment, best_time, [x for x in range(num_machines)]
 
