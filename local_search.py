@@ -2,6 +2,7 @@ import sys
 import os
 import random
 import math
+import time
 # "Main" is found at end of file..
 # The input file name
 input_file = sys.argv[1]
@@ -126,7 +127,6 @@ def create_greedy_solution(jobs):
   '''
   return None
   naive_assignment = deep_copy_job_list(jobs)
-  #types_2_machines = {1 : 0, 2 : 0, 3 : 1, 4 : 1, 5 : 0}
   types_2_machines = {1 : 1, 2 : 2, 3 : 0, 4 : 1, 5 : 0}
   lengths = [sum([j.proc_time if j.t == _type else 0 for j in jobs]) for _type in [1, 2, 3, 4, 5]]
   types_2_lengths = dict(zip([1, 2, 3, 4, 5], lengths))
@@ -144,7 +144,7 @@ def cart_cubed(list):
 def cart_quart(list):
   return [(i,j,k,l) for i in list for j in list for k in list for l in list]
 
-def get_best_neighbour(assigned_jobs):
+def get_better_neighbour(assigned_jobs):
   '''
   not necessarily best!?
   '''
@@ -268,7 +268,7 @@ def hill_climb(jobs):
   while changed and best_time > lp:
     changed = False
     best_neighbour_assignment, best_neighbour_time, involved_machines = \
-      get_best_neighbour(best_assignment)
+      get_better_neighbour(best_assignment)
 
     new_val = max([Solution(best_neighbour_assignment).finishing_times()[mach] for mach in involved_machines])
     old_val = max([Solution(best_assignment).finishing_times()[mach] for mach in involved_machines])
@@ -309,7 +309,7 @@ def handle_file(filepath):
 
   return current_jobs
 
-def output_solution(sol):
+def output_solution(sol, tiempo):
   '''
   Output the solution to the specified file
   '''
@@ -323,6 +323,7 @@ def output_solution(sol):
   output += log
   output += '-----------------------------------------\n'
   output += 'Overall number of iterations: %d\n' % num_iterations
+  output += 'Number of seconds elapsed: %.3f\n' % tiempo
   output += 'The final solution:\n'
   output += '%s' % sol
   output += '\n'
@@ -337,9 +338,10 @@ if __name__ == '__main__':
   orig_jobs = handle_file(input_file)
   jobs = deep_copy_job_list(orig_jobs)
 
+  start = time.time()
   sol = hill_climb(jobs)
-
-  output = output_solution(sol)
+  print("%d seconds elapsed" % (time.time()-start))
+  output = output_solution(sol, time.time()-start)
   out = open(output_file, 'w', encoding="utf8")
   out.write(output)
   out.close()

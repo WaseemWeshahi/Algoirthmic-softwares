@@ -1,0 +1,23 @@
+The problem had 11 jobs that needed to be scheduled on 5 machines.
+Initial solution:
+m1 : J7(3, 5), J8(3, 5) 	 sum: 6, types: 5
+m2 : J9(2, 1), J10(2, 1), J11(2, 1) 	 sum: 6, types: 1
+m3 : J1(3, 2), J2(3, 2) 	 sum: 6, types: 2
+m4 : J3(3, 3), J4(3, 3) 	 sum: 6, types: 3
+m5 : J5(3, 4), J6(3, 4) 	 sum: 6, types: 4
+-----------------------------------------
+Overall number of iterations: 0
+Number of seconds elapsed: 0.000
+The final solution:
+m1 : J7(3, 5), J8(3, 5) 	 sum: 6, types: 5
+m2 : J9(2, 1), J10(2, 1), J11(2, 1) 	 sum: 6, types: 1
+m3 : J1(3, 2), J2(3, 2) 	 sum: 6, types: 2
+m4 : J3(3, 3), J4(3, 3) 	 sum: 6, types: 3
+m5 : J5(3, 4), J6(3, 4) 	 sum: 6, types: 4
+
+Objective function's value: max{6, 6, 6, 6, 6} = 6
+*Lower bound (not necessarily tight): 6
+
+**output format:
+	m_k is the k'th machine.
+	J_i(P, T) is the i'th job with P processing time and is of type T.
