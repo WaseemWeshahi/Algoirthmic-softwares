@@ -47,7 +47,7 @@ Obtained a new solution by moving: J15(59, 3): 1->2, J16(61, 4): 2->1
 New machine finishing times: {459, 459, 457}
 -----------------------------------------
 Overall number of iterations: 14
-Number of seconds elapsed: 1.281
+Number of seconds elapsed: 0.880
 The final solution:
 m1 : J6(41, 2), J8(45, 2), J9(47, 2), J10(49, 2), J11(51, 3), J12(53, 3), J13(55, 3), J14(57, 3), J16(61, 4) 	 sum: 459, types: 2, 3, 4
 m2 : J1(31, 1), J2(33, 1), J3(35, 1), J4(37, 1), J15(59, 3), J17(63, 4), J18(65, 4), J19(67, 4), J20(69, 4) 	 sum: 459, types: 1, 3, 4

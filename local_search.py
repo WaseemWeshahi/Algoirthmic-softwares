@@ -3,6 +3,7 @@ import os
 import random
 import math
 import time
+from numpy import argsort
 # "Main" is found at end of file..
 # The input file name
 input_file = sys.argv[1]
@@ -79,7 +80,7 @@ class Solution:
     return True
 
   def finishing_times(self):
-    return [sum([j.proc_time for j in m]) for m in self.machines]
+    return self.machine_sums
 
   def finishing_time(self):
     return max(self.finishing_times())
@@ -153,10 +154,10 @@ def get_better_neighbour(assigned_jobs):
   print('finding best neighbour for the assignment:')
   print(Solution(assigned_jobs))
 
-  # Replacements
+  # Replacements - O(mn)
   for i in range(num_jobs):
     print('altering J%d' % (i+1))
-    for machine_ind in range(num_machines):
+    for machine_ind in list(argsort(Solution(best_assignment).finishing_times())):
       possible_assignment = deep_copy_job_list(best_assignment)
       orig_mach = possible_assignment[i].mach
       possible_assignment[i].mach = machine_ind
@@ -170,7 +171,7 @@ def get_better_neighbour(assigned_jobs):
         best_time = possible_sol.finishing_time()
         return best_assignment, best_time, involved_machines
 
-  # Switches
+  # Switches - O(n^2*m^2)
   for i, j in cart_squared(range(num_jobs)):
     print('look at J%d with J%d' % ((i+1),(j+1)))
     for machine_ind1, machine_ind2 in cart_squared(range(num_machines)):
@@ -192,31 +193,7 @@ def get_better_neighbour(assigned_jobs):
         best_time = possible_sol.finishing_time()
         return best_assignment, best_time, involved_machines
 
-  # Triple switches
-  for i, j, k in cart_cubed(range(num_jobs)):
-    print('look at J%d with J%d and J%d' % ((i+1),(j+1),(k+1)))
-    for machine_ind1, machine_ind2, machine_ind3 in cart_cubed(range(num_machines)):
-      possible_assignment = deep_copy_job_list(best_assignment)
-      orig_mach1 = possible_assignment[i].mach
-      orig_mach2 = possible_assignment[j].mach
-      orig_mach3 = possible_assignment[k].mach
-
-      possible_assignment[i].mach = machine_ind1
-      possible_assignment[j].mach = machine_ind2
-      possible_assignment[k].mach = machine_ind3
-
-      involved_machines = [orig_mach1, orig_mach2, orig_mach3, machine_ind1, machine_ind2, machine_ind3]
-
-      possible_sol = Solution(possible_assignment)
-
-      new_val = max([possible_sol.finishing_times()[mach] for mach in involved_machines])
-      old_val = max([Solution(best_assignment).finishing_times()[mach] for mach in involved_machines])
-      if possible_sol.is_valid() and new_val < old_val:
-        best_assignment = deep_copy_job_list(possible_assignment)
-        best_time = possible_sol.finishing_time()
-        return best_assignment, best_time, involved_machines
-
-  # Type-machine switches
+  # Type-machine switches - O(5*5*m^4*n)
   for t1, t2 in cart_squared(range(num_types)):
     print('switching types t%d with t%d' % ((t1+1),(t1+1)))
     for src1, src2, dst1, dst2 in cart_quart(range(num_machines)):
@@ -242,7 +219,30 @@ def get_better_neighbour(assigned_jobs):
         best_time = possible_sol.finishing_time()
         return best_assignment, best_time, involved_machines
 
+  # Triple switches - O(n^3*m^3)
+  for i, j, k in cart_cubed(range(num_jobs)):
+    print('look at J%d with J%d and J%d' % ((i+1),(j+1),(k+1)))
+    for machine_ind1, machine_ind2, machine_ind3 in cart_cubed(range(num_machines)):
+      possible_assignment = deep_copy_job_list(best_assignment)
+      orig_mach1 = possible_assignment[i].mach
+      orig_mach2 = possible_assignment[j].mach
+      orig_mach3 = possible_assignment[k].mach
 
+      possible_assignment[i].mach = machine_ind1
+      possible_assignment[j].mach = machine_ind2
+      possible_assignment[k].mach = machine_ind3
+
+      involved_machines = [orig_mach1, orig_mach2, orig_mach3, machine_ind1, machine_ind2, machine_ind3]
+
+      possible_sol = Solution(possible_assignment)
+
+      new_val = max([possible_sol.finishing_times()[mach] for mach in involved_machines])
+      old_val = max([Solution(best_assignment).finishing_times()[mach] for mach in involved_machines])
+      if possible_sol.is_valid() and new_val < old_val:
+        best_assignment = deep_copy_job_list(possible_assignment)
+        best_time = possible_sol.finishing_time()
+        return best_assignment, best_time, involved_machines
+ 
   return best_assignment, best_time, [x for x in range(num_machines)]
 
 def hill_climb(jobs):
@@ -251,36 +251,40 @@ def hill_climb(jobs):
   start with an arbitrary solution, then try to check the neighbouring solutions and
   iteratively head towards the best neighbour.
   '''
-  global log, num_iterations
-  init_jobs, init_sol = create_naive_solution(jobs)
-  log += 'Initial solution:\n%s\n' % init_sol
-  #init_jobs, init_sol = create_greedy_solution(jobs)
+  try:
+    global log, num_iterations
+    init_jobs, init_sol = create_naive_solution(jobs)
+    log += 'Initial solution:\n%s\n' % init_sol
+    #init_jobs, init_sol = create_greedy_solution(jobs)
 
-  if not init_sol.is_valid():
-    return None
+    if not init_sol.is_valid():
+      return None
 
-  best_assignment = init_jobs
-  best_time = init_sol.finishing_time()
-  print('Initial time: %d' % best_time)
+    best_assignment = init_jobs
+    best_time = init_sol.finishing_time()
+    print('Initial time: %d' % best_time)
 
-  lp = lower_bound(jobs)
-  changed = True
-  while changed and best_time > lp:
-    changed = False
-    best_neighbour_assignment, best_neighbour_time, involved_machines = \
-      get_better_neighbour(best_assignment)
+    lp = lower_bound(jobs)
+    changed = True
+    while changed and best_time > lp:
+      changed = False
+      best_neighbour_assignment, best_neighbour_time, involved_machines = \
+        get_better_neighbour(best_assignment)
 
-    new_val = max([Solution(best_neighbour_assignment).finishing_times()[mach] for mach in involved_machines])
-    old_val = max([Solution(best_assignment).finishing_times()[mach] for mach in involved_machines])
-    if new_val < old_val:
-      log += '*****************************************\n%s' % (get_diff(best_assignment, best_neighbour_assignment))
-      num_iterations += 1
-      best_assignment = best_neighbour_assignment
-      best_time = best_neighbour_time
-      print('found better assignment with time: %d' % best_time)
-      changed = True
+      new_val = max([Solution(best_neighbour_assignment).finishing_times()[mach] for mach in involved_machines])
+      old_val = max([Solution(best_assignment).finishing_times()[mach] for mach in involved_machines])
+      if new_val < old_val:
+        log += '*****************************************\n%s' % (get_diff(best_assignment, best_neighbour_assignment))
+        num_iterations += 1
+        best_assignment = best_neighbour_assignment
+        best_time = best_neighbour_time
+        print('found better assignment with time: %d' % best_time)
+        changed = True
 
-  return Solution(best_assignment)
+    return Solution(best_assignment)
+  except KeyboardInterrupt:
+    log += '\n\nProcess was terminated upon Keyboard interrupt, here is the latest solution:\n'
+    return Solution(best_assignment)
 
 
 

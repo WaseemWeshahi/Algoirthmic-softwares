@@ -75,7 +75,7 @@ Obtained a new solution by moving: J9(6, 5): 1->2, J13(5, 1): 2->1
 New machine finishing times: {36, 36, 35, 35}
 -----------------------------------------
 Overall number of iterations: 23
-Number of seconds elapsed: 6.864
+Number of seconds elapsed: 5.361
 The final solution:
 m1 : J13(5, 1), J15(5, 1), J16(5, 1), J17(5, 1), J11(10, 1), J10(6, 5) 	 sum: 36, types: 1, 5
 m2 : J2(6, 1), J19(12, 1), J20(12, 1), J9(6, 5) 	 sum: 36, types: 1, 5

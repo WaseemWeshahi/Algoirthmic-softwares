@@ -414,7 +414,7 @@ Obtained a new solution by moving: J2(3, 1): 3->4, J48(4, 3): 4->3
 New machine finishing times: {14, 14, 14, 14, 12, 12, 14, 14, 12, 13, 12, 14, 13, 13, 12, 13}
 -----------------------------------------
 Overall number of iterations: 132
-Number of seconds elapsed: 41.590
+Number of seconds elapsed: 31.912
 The final solution:
 m1 : J31(2, 2), J56(6, 4), J57(6, 4) 	 sum: 14, types: 2, 4
 m2 : J43(4, 3), J44(4, 3), J58(6, 4) 	 sum: 14, types: 3, 4
