@@ -266,7 +266,7 @@ def hill_climb(jobs):
 
     lp = lower_bound(jobs)
     changed = True
-    while changed and not all([x in [lp-1,lp] for x in Solution(best_assignment).finishing_times()]):
+    while changed and best_time > lp:
       changed = False
       best_neighbour_assignment, best_neighbour_time, involved_machines = \
         get_better_neighbour(best_assignment)
