@@ -7,7 +7,7 @@ Obtained a new solution by moving: J1(5, 1): 2->1, J4(6, 1): 2->1, J5(10, 2): 1-
 New machine finishing times: {31, 31}
 -----------------------------------------
 Overall number of iterations: 1
-Number of seconds elapsed: 0.149
+Number of seconds elapsed: 0.212
 The final solution:
 m1 : J1(5, 1), J4(6, 1), J7(3, 2), J9(7, 4), J8(10, 4) 	 sum: 31, types: 1, 2, 4
 m2 : J6(3, 1), J3(9, 1), J5(10, 2), J2(9, 3) 	 sum: 31, types: 1, 2, 3

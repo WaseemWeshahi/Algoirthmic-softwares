@@ -47,7 +47,7 @@ Obtained a new solution by moving: J1(4, 4): 1->2, J19(5, 4): 2->1
 New machine finishing times: {139, 140, 140}
 -----------------------------------------
 Overall number of iterations: 14
-Number of seconds elapsed: 0.139
+Number of seconds elapsed: 0.593
 The final solution:
 m1 : J2(10, 2), J9(13, 2), J10(14, 2), J8(17, 2), J22(7, 3), J4(8, 3), J14(12, 3), J6(17, 3), J15(18, 3), J12(5, 4), J19(5, 4), J5(6, 4), J16(7, 4) 	 sum: 139, types: 2, 3, 4
 m2 : J24(2, 1), J26(5, 1), J33(6, 1), J11(14, 1), J32(16, 1), J27(19, 1), J3(3, 4), J36(3, 4), J38(3, 4), J1(4, 4), J23(7, 4), J28(12, 4), J34(12, 4), J39(12, 4), J25(20, 4), J35(2, 5) 	 sum: 140, types: 1, 4, 5
