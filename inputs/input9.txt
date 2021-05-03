@@ -1,0 +1,23 @@
+# number of machines
+3
+# Jobs as pairs of processing time and type
+# 19 jobs
+35,1
+35,1
+35,1
+21,2
+22,2
+23,2
+24,2
+25,2
+26,2
+10,3
+11,3
+12,3
+13,3
+14,3
+30,4
+30,4
+20,5
+20,5
+20,5

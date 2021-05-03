@@ -266,7 +266,7 @@ def hill_climb(jobs):
 
     lp = lower_bound(jobs)
     changed = True
-    while changed and best_time > lp:
+    while changed and not all([x in [lp-1,lp] for x in Solution(best_assignment).finishing_times()]):
       changed = False
       best_neighbour_assignment, best_neighbour_time, involved_machines = \
         get_better_neighbour(best_assignment)
@@ -299,7 +299,8 @@ def handle_file(filepath):
     assert data[0] > 0, 'Processing times should be nonzero! you gave %d' % data[0]
 
   file = open(filepath, encoding="utf8")
-  file_lines = [line.strip() for line in file.readlines() if not line.startswith('#')]
+  file_lines = [line.strip() for line in file.readlines()]
+  file_lines = [line for line in file_lines if line and not line.startswith('#')]
 
   global num_machines
   num_machines = int(file_lines[0])
