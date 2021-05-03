@@ -157,8 +157,7 @@ def get_better_neighbour(assigned_jobs):
   # Replacements - O(mn)
   for i in range(num_jobs):
     print('altering J%d' % (i+1))
-    #for machine_ind in list(argsort(Solution(best_assignment).finishing_times())):
-    for machine_ind in range(num_machines):
+    for machine_ind in list(argsort(Solution(best_assignment).finishing_times())):
       possible_assignment = deep_copy_job_list(best_assignment)
       orig_mach = possible_assignment[i].mach
       possible_assignment[i].mach = machine_ind
