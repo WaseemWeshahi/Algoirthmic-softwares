@@ -3,9 +3,9 @@ The algorithm behind the attached program works the following:
 Initial solution: We send every job of type _t to the machine _t%m (modulo)
 
 At every iteration, we look for a better (not necessarily best!) neighbour, then we view it as our main solution,
-and we keep looking for better and better neighbours until we either reach the lower bound or when we stop finding "better" neighbours.
+and we keep looking for better and better neighbours until we either reach the lower bound** or when we stop finding "better" neighbours.
 
-The way we look for a neighbour is as follows:
+The way we look for a neighbour* is as follows:
 
 	1. We run over each job, and try to move it to every possible machine.
 
@@ -21,3 +21,6 @@ The moment we find a "better" solution, we return it.
 The way we determine if a solution is "better" or not, is by looking at the maximum value of finishing times but only on the machines involved in the swithcing.
 
 * We only consider "valid neighbours", as in, solutions that do not have more than 3 different distinct types.
+
+** We can change this condition so that we keep looking for new placements and neighbours until we get a more balanced solution,
+   but it is costly so it was only applied for smaller inputs.

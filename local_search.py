@@ -122,20 +122,6 @@ def create_naive_solution(jobs):
 
   return naive_assignment, Solution(naive_assignment)
 
-def create_greedy_solution(jobs):
-  '''
-  DEPRECATED - No need to delve too much into finding a good initial solution.
-  '''
-  return None
-  naive_assignment = deep_copy_job_list(jobs)
-  types_2_machines = {1 : 1, 2 : 2, 3 : 0, 4 : 1, 5 : 0}
-  lengths = [sum([j.proc_time if j.t == _type else 0 for j in jobs]) for _type in [1, 2, 3, 4, 5]]
-  types_2_lengths = dict(zip([1, 2, 3, 4, 5], lengths))
-  for i, job in enumerate(jobs):
-    naive_assignment[i].mach = types_2_machines[job.t]
-
-  return naive_assignment, Solution(naive_assignment)
-
 def cart_squared(list):
   return [(i,j) for i in list for j in list]
 
@@ -147,7 +133,7 @@ def cart_quart(list):
 
 def get_better_neighbour(assigned_jobs):
   '''
-  not necessarily best!?
+  not necessarily best
   '''
   best_assignment = deep_copy_job_list(assigned_jobs)
   best_time = Solution(assigned_jobs).finishing_time()
@@ -285,8 +271,6 @@ def hill_climb(jobs):
   except KeyboardInterrupt:
     log += '\n\nProcess was terminated upon Keyboard interrupt, here is the latest solution:\n'
     return Solution(best_assignment)
-
-
 
 def handle_file(filepath):
   '''
