@@ -1,0 +1,14 @@
+The problem had 5 jobs that needed to be scheduled on 2 machines.
+-----------------------------------------
+Overall number of iterations: 0
+Number of seconds elapsed: 0.015
+The final solution:
+m1 : J4(7, 1), J1(9, 1) 	 sum: 16, types: 1
+m2 : J3(3, 1), J5(4, 1), J2(8, 1) 	 sum: 15, types: 1
+
+Objective function's value: max{16, 15} = 16
+*Lower bound (not necessarily tight): 16
+
+**output format:
+	m_k is the k'th machine.
+	J_i(P, T) is the i'th job with P processing time and is of type T.

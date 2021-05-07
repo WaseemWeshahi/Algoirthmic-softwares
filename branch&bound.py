@@ -20,7 +20,7 @@ num_jobs = 0
 
 log = ''
 
-num_iterations = 0
+num_nodes = 1
 
 def get_id():
   global num_jobs
@@ -33,10 +33,10 @@ class Job:
       self.ind = get_id()
     self.proc_time = proc_time
     self.t = _type
-    self.mach = -1
+    self.mach = '?'
 
   def __repr__(self):
-    return 'J%d(%d, %d, %d)' % (self.ind, self.proc_time, self.t, self.mach)
+    return 'J%d(%d, %d, %r)' % (self.ind, self.proc_time, self.t, self.mach+1 if type(self.mach) is int else self.mach)
 
   def __str__(self):
     return 'J%d(%d, %d)' % (self.ind, self.proc_time, self.t)
@@ -65,9 +65,13 @@ def deep_copy_job_list(job_list):
 class Solution:
   def __init__(self, jobs):
     self.machines = [[] for i in range(num_machines)]
+    if not jobs:
+      self.machine_sums = [0]*num_machines
+      self.machine_types = [set()]*num_machines
+      return
 
     for j in jobs:
-      if j.mach == -1:
+      if j.mach == '?':
         continue
       self.machines[j.mach].append(j)
 
@@ -94,34 +98,45 @@ class Solution:
     return '\n'.join(['m%d : %s \t sum: %d, types: %s' % (ind+1, format_list(sorted(jobs_list)), self.machine_sums[ind], format_list(self.machine_types[ind])) for ind, jobs_list in enumerate(self.machines)])
 
 class Node:
-  def __init__(self, jobs_list, layer=0)
+  def __init__(self, jobs_list, layer=0):
     self.jobs_list = jobs_list
     self.layer = layer
 
   def create_children(self):
-    # TODO
-    children = []
+    if self.layer >= num_jobs - 1:
+      return []
 
+    children = []
+    for m in range(num_machines):
+      new_jobs_list = deep_copy_job_list(self.jobs_list)
+      new_jobs_list[self.layer+1].mach = m
+      if Solution(new_jobs_list).is_valid():
+        children.append(Node(new_jobs_list, self.layer+1))
     return children
 
   def handle_node(self, V):
     '''
     returns: should terminate?
     '''
-    # TODO
-    self.upper, self.possible_sol = upper_bound(jobs_list)
-    self.lower = lower_bound(jobs_list)
-    #self. = Solution(self.possible_assignment).finishing_time() # Dont need it that much!
-    if L >= V:
+    global num_nodes
+    num_nodes += 1
+    self.upper, self.possible_sol = upper_bound(self.jobs_list)
+    self.lower = lower_bound(self.jobs_list)
+    print(self)
+
+    if self.lower >= V:
       return True
-    if U < V:
+    if self.upper < V:
       return False
-    if U == V:
+    if self.upper == V:
       return True
 
-    return should_terminate
+  def __repr__(self):
+    return 'Layer:%d, Upper bound:%r, Lower bound:%r\nAssignment:%r' \
+      % (self.layer, getattr(self, 'upper', float('inf')), getattr(self, 'lower', -1), self.jobs_list)
 
-
+  def __str__(self):
+    return self.__repr__()
 
 def format_list(list):
   return ', '.join([str(x) for x in list])
@@ -141,22 +156,32 @@ def lower_bound(jobs):
   '''
   Give a lower bound given jobs that may be partially assigned
   '''
-  # TODO
-  pass
+  proc_times = [j.proc_time for j in jobs]
+  times_sum = sum(proc_times)
+  return max(proc_times + [math.ceil(times_sum/num_machines)] + Solution(jobs).finishing_times())
 
 def upper_bound(jobs):
   '''
   Give an upper bound given jobs that may be partially assigned
   '''
-  # TODO
-  pass
+  possible_assignment = deep_copy_job_list(jobs)
+  for ind, j in enumerate(jobs):
+    if j.mach == '?':
+      possible_assignment[ind].mach = 0
+
+  sol = Solution(possible_assignment)
+
+  proc_times = [j.proc_time for j in jobs]
+  times_sum = sum(proc_times)
+
+  up = max([sol.finishing_time()] + [times_sum])
+  return sol.finishing_time(), sol
 
 def get_diff(old_assignment, new_assignment):
   diff_indices = [ind for ind in range(num_jobs) if old_assignment[ind].mach != new_assignment[ind].mach]
 
   diff_str = ', '.join(['%s: %d->%d' % (new_assignment[ind], old_assignment[ind].mach+1, new_assignment[ind].mach+1) for ind in diff_indices])
   return 'Obtained a new solution by moving: ' + diff_str + '\nNew machine finishing times: {%s}\n' % format_list(Solution(new_assignment).finishing_times())
-
 
 def create_naive_solution(jobs):
   '''
@@ -181,20 +206,27 @@ def branch_and_bound(jobs):
   '''
   peform a branch and bound approach to find the optimal solution.
   '''
+  assert jobs, 'No jobs to be scheduled..'
+  global log
   try:
-    jobs = []
+    jobs[0].mach = 0
     active_queue = [Node(jobs)]
-    best_assignment = None
+    best_sol = None
     best_time = float('inf')
     while active_queue:
       cur_node = active_queue.pop()
       should_terminate = cur_node.handle_node(best_time)
       if not should_terminate:
-        active_queue.extend(cur_node.create_children())
-        best_assignment = cur_node.possible_assignment
+        log += '*****************************************\nExtending the node: %s\n' % (cur_node)
+        log += 'Current best solution:\n%s\n' % cur_node.possible_sol
+        log += 'Machine finishing_times: {%s}\n' % format_list(cur_node.possible_sol.finishing_times())
+        children = cur_node.create_children()
+        active_queue.extend(children)
+        best_sol = cur_node.possible_sol
         best_time = cur_node.upper
 
-    return Solution(best_assignment)
+    return best_sol
+
   except KeyboardInterrupt:
     log += '\n\nProcess was terminated upon Keyboard interrupt, here is the latest solution:\n'
     return Solution(best_assignment)
@@ -237,7 +269,7 @@ def output_solution(sol, tiempo):
   output += 'The problem had %d jobs that needed to be scheduled on %d machines.\n' % (num_jobs, num_machines)
   output += log
   output += '-----------------------------------------\n'
-  output += 'Overall number of iterations: %d\n' % num_iterations
+  output += 'Overall number of nodes visited: %d\n' % num_nodes
   output += 'Number of seconds elapsed: %.3f\n' % tiempo
   output += 'The final solution:\n'
   output += '%s' % sol
@@ -245,7 +277,7 @@ def output_solution(sol, tiempo):
   output += '\nObjective function\'s value: max{%s} = %d\n' % (format_list(sol.finishing_times()), sol.finishing_time())
   output += '*Lower bound (not necessarily tight): %d\n' % global_lower_bound(orig_jobs)
   output += '\n'
-  output += '**output format:\n\tm_k is the k\'th machine.\n\tJ_i(P, T) is the i\'th job with P processing time and is of type T.'
+  output += '**output format:\n\tm_k is the k\'th machine.\n\tJ_i(P, T, M) is the i\'th job with processing time P, of type T, and is assigned to machine M (marked as \'?\' when unassigned).'
 
   return output
 
