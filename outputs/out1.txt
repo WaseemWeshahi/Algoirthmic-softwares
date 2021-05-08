@@ -5,108 +5,136 @@ Assignment:[J1(5, 1, 1), J2(9, 3, '?'), J3(9, 1, '?'), J4(6, 1, '?'), J5(10, 2, 
 Current best solution:
 m1 : J6(3, 1), J1(5, 1), J4(6, 1), J3(9, 1), J7(3, 2), J5(10, 2), J2(9, 3), J9(7, 4), J8(10, 4) 	 sum: 62, types: 1, 2, 3, 4
 m2 :  	 sum: 0, types: 
-Machine finishing_times: {62, 0}
+Machines finishing_times: {62, 0}
 *****************************************
 Extending the node: Layer:1, Upper bound:53, Lower bound:31
 Assignment:[J1(5, 1, 1), J2(9, 3, 2), J3(9, 1, '?'), J4(6, 1, '?'), J5(10, 2, '?'), J6(3, 1, '?'), J7(3, 2, '?'), J8(10, 4, '?'), J9(7, 4, '?')]
 Current best solution:
 m1 : J6(3, 1), J1(5, 1), J4(6, 1), J3(9, 1), J7(3, 2), J5(10, 2), J9(7, 4), J8(10, 4) 	 sum: 53, types: 1, 2, 4
 m2 : J2(9, 3) 	 sum: 9, types: 3
-Machine finishing_times: {53, 9}
+Machines finishing_times: {53, 9}
 *****************************************
 Extending the node: Layer:2, Upper bound:44, Lower bound:31
 Assignment:[J1(5, 1, 1), J2(9, 3, 2), J3(9, 1, 2), J4(6, 1, '?'), J5(10, 2, '?'), J6(3, 1, '?'), J7(3, 2, '?'), J8(10, 4, '?'), J9(7, 4, '?')]
 Current best solution:
 m1 : J6(3, 1), J1(5, 1), J4(6, 1), J7(3, 2), J5(10, 2), J9(7, 4), J8(10, 4) 	 sum: 44, types: 1, 2, 4
 m2 : J3(9, 1), J2(9, 3) 	 sum: 18, types: 1, 3
-Machine finishing_times: {44, 18}
+Machines finishing_times: {44, 18}
 *****************************************
 Extending the node: Layer:3, Upper bound:38, Lower bound:31
 Assignment:[J1(5, 1, 1), J2(9, 3, 2), J3(9, 1, 2), J4(6, 1, 2), J5(10, 2, '?'), J6(3, 1, '?'), J7(3, 2, '?'), J8(10, 4, '?'), J9(7, 4, '?')]
 Current best solution:
 m1 : J6(3, 1), J1(5, 1), J7(3, 2), J5(10, 2), J9(7, 4), J8(10, 4) 	 sum: 38, types: 1, 2, 4
 m2 : J4(6, 1), J3(9, 1), J2(9, 3) 	 sum: 24, types: 1, 3
-Machine finishing_times: {38, 24}
+Machines finishing_times: {38, 24}
 *****************************************
 Extending the node: Layer:4, Upper bound:34, Lower bound:34
 Assignment:[J1(5, 1, 1), J2(9, 3, 2), J3(9, 1, 2), J4(6, 1, 2), J5(10, 2, 2), J6(3, 1, '?'), J7(3, 2, '?'), J8(10, 4, '?'), J9(7, 4, '?')]
 Current best solution:
 m1 : J6(3, 1), J1(5, 1), J7(3, 2), J9(7, 4), J8(10, 4) 	 sum: 28, types: 1, 2, 4
 m2 : J4(6, 1), J3(9, 1), J5(10, 2), J2(9, 3) 	 sum: 34, types: 1, 2, 3
-Machine finishing_times: {28, 34}
+Machines finishing_times: {28, 34}
 *****************************************
 Extending the node: Layer:4, Upper bound:38, Lower bound:31
 Assignment:[J1(5, 1, 1), J2(9, 3, 2), J3(9, 1, 2), J4(6, 1, 2), J5(10, 2, 1), J6(3, 1, '?'), J7(3, 2, '?'), J8(10, 4, '?'), J9(7, 4, '?')]
 Current best solution:
 m1 : J6(3, 1), J1(5, 1), J7(3, 2), J5(10, 2), J9(7, 4), J8(10, 4) 	 sum: 38, types: 1, 2, 4
 m2 : J4(6, 1), J3(9, 1), J2(9, 3) 	 sum: 24, types: 1, 3
-Machine finishing_times: {38, 24}
+Machines finishing_times: {38, 24}
 *****************************************
 Extending the node: Layer:5, Upper bound:35, Lower bound:31
 Assignment:[J1(5, 1, 1), J2(9, 3, 2), J3(9, 1, 2), J4(6, 1, 2), J5(10, 2, 1), J6(3, 1, 2), J7(3, 2, '?'), J8(10, 4, '?'), J9(7, 4, '?')]
 Current best solution:
 m1 : J1(5, 1), J7(3, 2), J5(10, 2), J9(7, 4), J8(10, 4) 	 sum: 35, types: 1, 2, 4
 m2 : J6(3, 1), J4(6, 1), J3(9, 1), J2(9, 3) 	 sum: 27, types: 1, 3
-Machine finishing_times: {35, 27}
+Machines finishing_times: {35, 27}
 *****************************************
 Extending the node: Layer:6, Upper bound:32, Lower bound:31
 Assignment:[J1(5, 1, 1), J2(9, 3, 2), J3(9, 1, 2), J4(6, 1, 2), J5(10, 2, 1), J6(3, 1, 2), J7(3, 2, 2), J8(10, 4, '?'), J9(7, 4, '?')]
 Current best solution:
 m1 : J1(5, 1), J5(10, 2), J9(7, 4), J8(10, 4) 	 sum: 32, types: 1, 2, 4
 m2 : J6(3, 1), J4(6, 1), J3(9, 1), J7(3, 2), J2(9, 3) 	 sum: 30, types: 1, 2, 3
-Machine finishing_times: {32, 30}
+Machines finishing_times: {32, 30}
+*****************************************
+Extending the node: Layer:7, Upper bound:32, Lower bound:31
+Assignment:[J1(5, 1, 1), J2(9, 3, 2), J3(9, 1, 2), J4(6, 1, 2), J5(10, 2, 1), J6(3, 1, 2), J7(3, 2, 2), J8(10, 4, 1), J9(7, 4, '?')]
+Current best solution:
+m1 : J1(5, 1), J5(10, 2), J9(7, 4), J8(10, 4) 	 sum: 32, types: 1, 2, 4
+m2 : J6(3, 1), J4(6, 1), J3(9, 1), J7(3, 2), J2(9, 3) 	 sum: 30, types: 1, 2, 3
+Machines finishing_times: {32, 30}
 *****************************************
 Extending the node: Layer:6, Upper bound:35, Lower bound:31
 Assignment:[J1(5, 1, 1), J2(9, 3, 2), J3(9, 1, 2), J4(6, 1, 2), J5(10, 2, 1), J6(3, 1, 2), J7(3, 2, 1), J8(10, 4, '?'), J9(7, 4, '?')]
 Current best solution:
 m1 : J1(5, 1), J7(3, 2), J5(10, 2), J9(7, 4), J8(10, 4) 	 sum: 35, types: 1, 2, 4
 m2 : J6(3, 1), J4(6, 1), J3(9, 1), J2(9, 3) 	 sum: 27, types: 1, 3
-Machine finishing_times: {35, 27}
+Machines finishing_times: {35, 27}
+*****************************************
+Extending the node: Layer:7, Upper bound:35, Lower bound:31
+Assignment:[J1(5, 1, 1), J2(9, 3, 2), J3(9, 1, 2), J4(6, 1, 2), J5(10, 2, 1), J6(3, 1, 2), J7(3, 2, 1), J8(10, 4, 1), J9(7, 4, '?')]
+Current best solution:
+m1 : J1(5, 1), J7(3, 2), J5(10, 2), J9(7, 4), J8(10, 4) 	 sum: 35, types: 1, 2, 4
+m2 : J6(3, 1), J4(6, 1), J3(9, 1), J2(9, 3) 	 sum: 27, types: 1, 3
+Machines finishing_times: {35, 27}
+*****************************************
+Extending the node: Layer:8, Upper bound:34, Lower bound:34
+Assignment:[J1(5, 1, 1), J2(9, 3, 2), J3(9, 1, 2), J4(6, 1, 2), J5(10, 2, 1), J6(3, 1, 2), J7(3, 2, 1), J8(10, 4, 1), J9(7, 4, 2)]
+Current best solution:
+m1 : J1(5, 1), J7(3, 2), J5(10, 2), J8(10, 4) 	 sum: 28, types: 1, 2, 4
+m2 : J6(3, 1), J4(6, 1), J3(9, 1), J2(9, 3), J9(7, 4) 	 sum: 34, types: 1, 3, 4
+Machines finishing_times: {28, 34}
 *****************************************
 Extending the node: Layer:5, Upper bound:38, Lower bound:31
 Assignment:[J1(5, 1, 1), J2(9, 3, 2), J3(9, 1, 2), J4(6, 1, 2), J5(10, 2, 1), J6(3, 1, 1), J7(3, 2, '?'), J8(10, 4, '?'), J9(7, 4, '?')]
 Current best solution:
 m1 : J6(3, 1), J1(5, 1), J7(3, 2), J5(10, 2), J9(7, 4), J8(10, 4) 	 sum: 38, types: 1, 2, 4
 m2 : J4(6, 1), J3(9, 1), J2(9, 3) 	 sum: 24, types: 1, 3
-Machine finishing_times: {38, 24}
+Machines finishing_times: {38, 24}
 *****************************************
 Extending the node: Layer:6, Upper bound:35, Lower bound:31
 Assignment:[J1(5, 1, 1), J2(9, 3, 2), J3(9, 1, 2), J4(6, 1, 2), J5(10, 2, 1), J6(3, 1, 1), J7(3, 2, 2), J8(10, 4, '?'), J9(7, 4, '?')]
 Current best solution:
 m1 : J6(3, 1), J1(5, 1), J5(10, 2), J9(7, 4), J8(10, 4) 	 sum: 35, types: 1, 2, 4
 m2 : J4(6, 1), J3(9, 1), J7(3, 2), J2(9, 3) 	 sum: 27, types: 1, 2, 3
-Machine finishing_times: {35, 27}
+Machines finishing_times: {35, 27}
+*****************************************
+Extending the node: Layer:7, Upper bound:35, Lower bound:31
+Assignment:[J1(5, 1, 1), J2(9, 3, 2), J3(9, 1, 2), J4(6, 1, 2), J5(10, 2, 1), J6(3, 1, 1), J7(3, 2, 2), J8(10, 4, 1), J9(7, 4, '?')]
+Current best solution:
+m1 : J6(3, 1), J1(5, 1), J5(10, 2), J9(7, 4), J8(10, 4) 	 sum: 35, types: 1, 2, 4
+m2 : J4(6, 1), J3(9, 1), J7(3, 2), J2(9, 3) 	 sum: 27, types: 1, 2, 3
+Machines finishing_times: {35, 27}
 *****************************************
 Extending the node: Layer:6, Upper bound:38, Lower bound:31
 Assignment:[J1(5, 1, 1), J2(9, 3, 2), J3(9, 1, 2), J4(6, 1, 2), J5(10, 2, 1), J6(3, 1, 1), J7(3, 2, 1), J8(10, 4, '?'), J9(7, 4, '?')]
 Current best solution:
 m1 : J6(3, 1), J1(5, 1), J7(3, 2), J5(10, 2), J9(7, 4), J8(10, 4) 	 sum: 38, types: 1, 2, 4
 m2 : J4(6, 1), J3(9, 1), J2(9, 3) 	 sum: 24, types: 1, 3
-Machine finishing_times: {38, 24}
+Machines finishing_times: {38, 24}
 *****************************************
 Extending the node: Layer:7, Upper bound:34, Lower bound:34
 Assignment:[J1(5, 1, 1), J2(9, 3, 2), J3(9, 1, 2), J4(6, 1, 2), J5(10, 2, 1), J6(3, 1, 1), J7(3, 2, 1), J8(10, 4, 2), J9(7, 4, '?')]
 Current best solution:
 m1 : J6(3, 1), J1(5, 1), J7(3, 2), J5(10, 2), J9(7, 4) 	 sum: 28, types: 1, 2, 4
 m2 : J4(6, 1), J3(9, 1), J2(9, 3), J8(10, 4) 	 sum: 34, types: 1, 3, 4
-Machine finishing_times: {28, 34}
+Machines finishing_times: {28, 34}
 *****************************************
 Extending the node: Layer:7, Upper bound:38, Lower bound:31
 Assignment:[J1(5, 1, 1), J2(9, 3, 2), J3(9, 1, 2), J4(6, 1, 2), J5(10, 2, 1), J6(3, 1, 1), J7(3, 2, 1), J8(10, 4, 1), J9(7, 4, '?')]
 Current best solution:
 m1 : J6(3, 1), J1(5, 1), J7(3, 2), J5(10, 2), J9(7, 4), J8(10, 4) 	 sum: 38, types: 1, 2, 4
 m2 : J4(6, 1), J3(9, 1), J2(9, 3) 	 sum: 24, types: 1, 3
-Machine finishing_times: {38, 24}
+Machines finishing_times: {38, 24}
 *****************************************
 Extending the node: Layer:8, Upper bound:31, Lower bound:31
 Assignment:[J1(5, 1, 1), J2(9, 3, 2), J3(9, 1, 2), J4(6, 1, 2), J5(10, 2, 1), J6(3, 1, 1), J7(3, 2, 1), J8(10, 4, 1), J9(7, 4, 2)]
 Current best solution:
 m1 : J6(3, 1), J1(5, 1), J7(3, 2), J5(10, 2), J8(10, 4) 	 sum: 31, types: 1, 2, 4
 m2 : J4(6, 1), J3(9, 1), J2(9, 3), J9(7, 4) 	 sum: 31, types: 1, 3, 4
-Machine finishing_times: {31, 31}
+Machines finishing_times: {31, 31}
 -----------------------------------------
-Overall number of nodes visited: 28
-Number of seconds elapsed: 0.036
+Overall number of nodes visited: 32
+Number of seconds elapsed: 0.012
 The final solution:
 m1 : J6(3, 1), J1(5, 1), J7(3, 2), J5(10, 2), J8(10, 4) 	 sum: 31, types: 1, 2, 4
 m2 : J4(6, 1), J3(9, 1), J2(9, 3), J9(7, 4) 	 sum: 31, types: 1, 3, 4

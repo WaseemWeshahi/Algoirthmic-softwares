@@ -54,6 +54,9 @@ class Job:
   def __eq__(self, other):
     return self.ind == other.ind
 
+  def __len__(self):
+    return self.proc_time
+
   def __copy__(self):
     newone = Job(self.proc_time, self.t)
     newone.__dict__.update(self.__dict__)
@@ -79,9 +82,8 @@ class Solution:
     self.machine_types = [set([j.t for j in m]) for m in self.machines]
 
   def is_valid(self):
-    for m in self.machines:
-      types_set = set([j.t for j in m])
-      if len(types_set) > 3:
+    for i in range(num_machines):
+      if len(self.machine_types[i]) > 3:
         return False
     return True
 
@@ -90,6 +92,9 @@ class Solution:
 
   def finishing_time(self):
     return max(self.finishing_times())
+
+  def machine_types(self):
+    return self.machine_types
 
   def __repr__(self):
     return '\n'.join(['m%d : %s' % (ind+1, sorted(jobs_list)) for ind, jobs_list in enumerate(self.machines)])
@@ -123,12 +128,12 @@ class Node:
     self.upper, self.possible_sol = upper_bound(self.jobs_list)
     self.lower = lower_bound(self.jobs_list)
     print(self)
-
+    #import pdb;pdb.set_trace()
     if self.lower >= V:
       return True
     if self.upper < V:
       return False
-    if self.upper == V:
+    if self.upper == self.lower:
       return True
 
   def __repr__(self):
@@ -160,11 +165,29 @@ def lower_bound(jobs):
   times_sum = sum(proc_times)
   return max(proc_times + [math.ceil(times_sum/num_machines)] + Solution(jobs).finishing_times())
 
+def job_len(tup):
+  return len(tup[1])
+
 def upper_bound(jobs):
   '''
   Give an upper bound given jobs that may be partially assigned
   '''
   possible_assignment = deep_copy_job_list(jobs)
+  partial_solution = Solution(possible_assignment)
+  mach_meta_data = list(zip(partial_solution.finishing_times(), partial_solution.machine_types))
+
+  mach_dict = dict(zip(range(num_machines), mach_meta_data))
+
+  unassigned_jobs = sorted([(ind,j) for ind,j in enumerate(jobs) if j.mach == '?'], key=lambda x: len(x[1]), reverse=True)
+
+  for (ind, j) in unassigned_jobs:
+    mach_dict = dict(sorted(mach_dict.items(), key=lambda x: x[1][0]))
+    for m in mach_dict:
+      if len(set([j.t]) | mach_dict[m][1]) <=3:
+        possible_assignment[ind].mach = m
+        mach_dict[m] = (mach_dict[m][0] + j.proc_time, mach_dict[m][1] | set([j.t])) # finishing time, types
+        break
+
   for ind, j in enumerate(jobs):
     if j.mach == '?':
       possible_assignment[ind].mach = 0
@@ -219,7 +242,7 @@ def branch_and_bound(jobs):
       if not should_terminate:
         log += '*****************************************\nExtending the node: %s\n' % (cur_node)
         log += 'Current best solution:\n%s\n' % cur_node.possible_sol
-        log += 'Machine finishing_times: {%s}\n' % format_list(cur_node.possible_sol.finishing_times())
+        log += 'Machines finishing_times: {%s}\n' % format_list(cur_node.possible_sol.finishing_times())
         children = cur_node.create_children()
         active_queue.extend(children)
         best_sol = cur_node.possible_sol
