@@ -1,23 +1,37 @@
 The problem had 11 jobs that needed to be scheduled on 5 machines.
-Initial solution:
-m1 : J7(3, 5), J8(3, 5) 	 sum: 6, types: 5
-m2 : J9(2, 1), J10(2, 1), J11(2, 1) 	 sum: 6, types: 1
-m3 : J1(3, 2), J2(3, 2) 	 sum: 6, types: 2
-m4 : J3(3, 3), J4(3, 3) 	 sum: 6, types: 3
+*****************************************
+Extending the node: Layer:0, Upper bound:7, Lower bound:6
+Assignment:[J1(3, 2, 1), J2(3, 2, '?'), J3(3, 3, '?'), J4(3, 3, '?'), J5(3, 4, '?'), J6(3, 4, '?'), J7(3, 5, '?'), J8(3, 5, '?'), J9(2, 1, '?'), J10(2, 1, '?'), J11(2, 1, '?')]
+Current best solution:
+m1 : J10(2, 1), J11(2, 1), J1(3, 2) 	 sum: 7, types: 1, 2
+m2 : J9(2, 1), J2(3, 2) 	 sum: 5, types: 1, 2
+m3 : J3(3, 3), J8(3, 5) 	 sum: 6, types: 3, 5
+m4 : J4(3, 3), J7(3, 5) 	 sum: 6, types: 3, 5
 m5 : J5(3, 4), J6(3, 4) 	 sum: 6, types: 4
+Machines finishing_times: {7, 5, 6, 6, 6}
+*****************************************
+Extending the node: Layer:7, Upper bound:6, Lower bound:6
+Assignment:[J1(3, 2, 1), J2(3, 2, 5), J3(3, 3, 5), J4(3, 3, 4), J5(3, 4, 4), J6(3, 4, 3), J7(3, 5, 3), J8(3, 5, 1), J9(2, 1, '?'), J10(2, 1, '?'), J11(2, 1, '?')]
+Current best solution:
+m1 : J1(3, 2), J8(3, 5) 	 sum: 6, types: 2, 5
+m2 : J9(2, 1), J10(2, 1), J11(2, 1) 	 sum: 6, types: 1
+m3 : J6(3, 4), J7(3, 5) 	 sum: 6, types: 4, 5
+m4 : J4(3, 3), J5(3, 4) 	 sum: 6, types: 3, 4
+m5 : J2(3, 2), J3(3, 3) 	 sum: 6, types: 2, 3
+Machines finishing_times: {6, 6, 6, 6, 6}
 -----------------------------------------
-Overall number of iterations: 0
-Number of seconds elapsed: 0.000
+Overall number of nodes visited: 62
+Number of seconds elapsed: 0.007
 The final solution:
-m1 : J7(3, 5), J8(3, 5) 	 sum: 6, types: 5
+m1 : J1(3, 2), J8(3, 5) 	 sum: 6, types: 2, 5
 m2 : J9(2, 1), J10(2, 1), J11(2, 1) 	 sum: 6, types: 1
-m3 : J1(3, 2), J2(3, 2) 	 sum: 6, types: 2
-m4 : J3(3, 3), J4(3, 3) 	 sum: 6, types: 3
-m5 : J5(3, 4), J6(3, 4) 	 sum: 6, types: 4
+m3 : J6(3, 4), J7(3, 5) 	 sum: 6, types: 4, 5
+m4 : J4(3, 3), J5(3, 4) 	 sum: 6, types: 3, 4
+m5 : J2(3, 2), J3(3, 3) 	 sum: 6, types: 2, 3
 
 Objective function's value: max{6, 6, 6, 6, 6} = 6
 *Lower bound (not necessarily tight): 6
 
 **output format:
 	m_k is the k'th machine.
-	J_i(P, T) is the i'th job with P processing time and is of type T.
+	J_i(P, T, M) is the i'th job with processing time P, of type T, and is assigned to machine M (marked as '?' when unassigned).

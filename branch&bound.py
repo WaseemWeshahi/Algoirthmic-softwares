@@ -127,14 +127,17 @@ class Node:
     num_nodes += 1
     self.upper, self.possible_sol = upper_bound(self.jobs_list)
     self.lower = lower_bound(self.jobs_list)
+    (should_terminate, should_update) = (True, False)
     print(self)
     #import pdb;pdb.set_trace()
     if self.lower >= V:
-      return True
+      return (True, False)
     if self.upper < V:
-      return False
+      should_update = True
     if self.upper == self.lower:
-      return True
+      return (True, should_update)
+
+    return (False, should_update)
 
   def __repr__(self):
     return 'Layer:%d, Upper bound:%r, Lower bound:%r\nAssignment:%r' \
@@ -173,6 +176,7 @@ def upper_bound(jobs):
   Give an upper bound given jobs that may be partially assigned
   '''
   possible_assignment = deep_copy_job_list(jobs)
+  alt_assignment = deep_copy_job_list(possible_assignment)
   partial_solution = Solution(possible_assignment)
   mach_meta_data = list(zip(partial_solution.finishing_times(), partial_solution.machine_types))
 
@@ -188,9 +192,28 @@ def upper_bound(jobs):
         mach_dict[m] = (mach_dict[m][0] + j.proc_time, mach_dict[m][1] | set([j.t])) # finishing time, types
         break
 
-  for ind, j in enumerate(jobs):
-    if j.mach == '?':
-      possible_assignment[ind].mach = 0
+  # If LPT fails..
+  if not all([j.mach != '?' for j in possible_assignment]):
+    mach_meta_data = list(zip(partial_solution.finishing_times(), partial_solution.machine_types))
+    mach_dict = dict(zip(range(num_machines), mach_meta_data))
+    for (ind, j) in unassigned_jobs:
+      for m in range(num_machines):
+        if j.t in mach_dict[m][1]: # Wherever is available.
+          alt_assignment[ind].mach = m
+          mach_dict[m] = (mach_dict[m][0] + j.proc_time, mach_dict[m][1] | set([j.t])) # finishing time, types
+          break
+      for m in range(num_machines):
+        if len(set([j.t]) | mach_dict[m][1]) <=3: # Wherver is valid.
+          alt_assignment[ind].mach = m
+          mach_dict[m] = (mach_dict[m][0] + j.proc_time, mach_dict[m][1] | set([j.t])) # finishing time, types
+          break
+    possible_assignment = deep_copy_job_list(alt_assignment)
+
+  if not all([j.mach != '?' for j in possible_assignment]):
+    for ind, j in enumerate(possible_assignment):
+      if j.mach == '?':
+        possible_assignment[ind].mach = 0
+    return float('inf'), Solution(possible_assignment)
 
   sol = Solution(possible_assignment)
 
@@ -238,21 +261,22 @@ def branch_and_bound(jobs):
     best_time = float('inf')
     while active_queue:
       cur_node = active_queue.pop()
-      should_terminate = cur_node.handle_node(best_time)
-      if not should_terminate:
+      should_terminate, should_update = cur_node.handle_node(best_time)
+      if should_update:
+        best_sol = cur_node.possible_sol
+        best_time = cur_node.upper
         log += '*****************************************\nExtending the node: %s\n' % (cur_node)
         log += 'Current best solution:\n%s\n' % cur_node.possible_sol
         log += 'Machines finishing_times: {%s}\n' % format_list(cur_node.possible_sol.finishing_times())
+      if not should_terminate:
         children = cur_node.create_children()
         active_queue.extend(children)
-        best_sol = cur_node.possible_sol
-        best_time = cur_node.upper
 
     return best_sol
 
   except KeyboardInterrupt:
     log += '\n\nProcess was terminated upon Keyboard interrupt, here is the latest solution:\n'
-    return Solution(best_assignment)
+    return best_sol
 
 def handle_file(filepath):
   '''

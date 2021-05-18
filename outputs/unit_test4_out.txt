@@ -1,167 +1,34 @@
-The problem had 28 jobs that needed to be scheduled on 8 machines.
-Initial solution:
-m1 :  	 sum: 0, types: 
-m2 : J1(3, 1), J2(3, 1), J3(3, 1), J4(3, 1), J5(3, 1), J6(3, 1), J7(3, 1), J8(3, 1), J9(3, 1), J10(3, 1), J11(3, 1), J12(3, 1), J13(3, 1), J14(3, 1), J15(3, 1), J16(3, 1) 	 sum: 48, types: 1
-m3 : J17(4, 2), J18(4, 2), J19(4, 2), J20(4, 2), J21(4, 2), J22(4, 2), J23(4, 2), J24(4, 2), J25(4, 2), J26(4, 2), J27(4, 2), J28(4, 2) 	 sum: 48, types: 2
-m4 :  	 sum: 0, types: 
-m5 :  	 sum: 0, types: 
-m6 :  	 sum: 0, types: 
-m7 :  	 sum: 0, types: 
-m8 :  	 sum: 0, types: 
+The problem had 14 jobs that needed to be scheduled on 4 machines.
 *****************************************
-Obtained a new solution by moving: J1(3, 1): 2->1
-New machine finishing times: {3, 45, 48, 0, 0, 0, 0, 0}
+Extending the node: Layer:0, Upper bound:13, Lower bound:12
+Assignment:[J1(3, 1, 1), J2(3, 1, '?'), J3(3, 1, '?'), J4(3, 1, '?'), J5(3, 1, '?'), J6(3, 1, '?'), J7(3, 1, '?'), J8(3, 1, '?'), J9(4, 2, '?'), J10(4, 2, '?'), J11(4, 2, '?'), J12(4, 2, '?'), J13(4, 2, '?'), J14(4, 2, '?')]
+Current best solution:
+m1 : J1(3, 1), J4(3, 1), J7(3, 1), J12(4, 2) 	 sum: 13, types: 1, 2
+m2 : J2(3, 1), J3(3, 1), J8(3, 1), J9(4, 2) 	 sum: 13, types: 1, 2
+m3 : J5(3, 1), J10(4, 2), J14(4, 2) 	 sum: 11, types: 1, 2
+m4 : J6(3, 1), J11(4, 2), J13(4, 2) 	 sum: 11, types: 1, 2
+Machines finishing_times: {13, 13, 11, 11}
 *****************************************
-Obtained a new solution by moving: J2(3, 1): 2->1
-New machine finishing times: {6, 42, 48, 0, 0, 0, 0, 0}
-*****************************************
-Obtained a new solution by moving: J1(3, 1): 1->4
-New machine finishing times: {3, 42, 48, 3, 0, 0, 0, 0}
-*****************************************
-Obtained a new solution by moving: J3(3, 1): 2->1
-New machine finishing times: {6, 39, 48, 3, 0, 0, 0, 0}
-*****************************************
-Obtained a new solution by moving: J2(3, 1): 1->5
-New machine finishing times: {3, 39, 48, 3, 3, 0, 0, 0}
-*****************************************
-Obtained a new solution by moving: J4(3, 1): 2->1
-New machine finishing times: {6, 36, 48, 3, 3, 0, 0, 0}
-*****************************************
-Obtained a new solution by moving: J3(3, 1): 1->6
-New machine finishing times: {3, 36, 48, 3, 3, 3, 0, 0}
-*****************************************
-Obtained a new solution by moving: J5(3, 1): 2->1
-New machine finishing times: {6, 33, 48, 3, 3, 3, 0, 0}
-*****************************************
-Obtained a new solution by moving: J4(3, 1): 1->7
-New machine finishing times: {3, 33, 48, 3, 3, 3, 3, 0}
-*****************************************
-Obtained a new solution by moving: J6(3, 1): 2->1
-New machine finishing times: {6, 30, 48, 3, 3, 3, 3, 0}
-*****************************************
-Obtained a new solution by moving: J5(3, 1): 1->8
-New machine finishing times: {3, 30, 48, 3, 3, 3, 3, 3}
-*****************************************
-Obtained a new solution by moving: J7(3, 1): 2->1
-New machine finishing times: {6, 27, 48, 3, 3, 3, 3, 3}
-*****************************************
-Obtained a new solution by moving: J8(3, 1): 2->1
-New machine finishing times: {9, 24, 48, 3, 3, 3, 3, 3}
-*****************************************
-Obtained a new solution by moving: J6(3, 1): 1->4
-New machine finishing times: {6, 24, 48, 6, 3, 3, 3, 3}
-*****************************************
-Obtained a new solution by moving: J9(3, 1): 2->1
-New machine finishing times: {9, 21, 48, 6, 3, 3, 3, 3}
-*****************************************
-Obtained a new solution by moving: J7(3, 1): 1->5
-New machine finishing times: {6, 21, 48, 6, 6, 3, 3, 3}
-*****************************************
-Obtained a new solution by moving: J10(3, 1): 2->1
-New machine finishing times: {9, 18, 48, 6, 6, 3, 3, 3}
-*****************************************
-Obtained a new solution by moving: J8(3, 1): 1->6
-New machine finishing times: {6, 18, 48, 6, 6, 6, 3, 3}
-*****************************************
-Obtained a new solution by moving: J11(3, 1): 2->1
-New machine finishing times: {9, 15, 48, 6, 6, 6, 3, 3}
-*****************************************
-Obtained a new solution by moving: J9(3, 1): 1->7
-New machine finishing times: {6, 15, 48, 6, 6, 6, 6, 3}
-*****************************************
-Obtained a new solution by moving: J12(3, 1): 2->1
-New machine finishing times: {9, 12, 48, 6, 6, 6, 6, 3}
-*****************************************
-Obtained a new solution by moving: J10(3, 1): 1->8
-New machine finishing times: {6, 12, 48, 6, 6, 6, 6, 6}
-*****************************************
-Obtained a new solution by moving: J13(3, 1): 2->1
-New machine finishing times: {9, 9, 48, 6, 6, 6, 6, 6}
-*****************************************
-Obtained a new solution by moving: J17(4, 2): 3->1
-New machine finishing times: {13, 9, 44, 6, 6, 6, 6, 6}
-*****************************************
-Obtained a new solution by moving: J11(3, 1): 1->2
-New machine finishing times: {10, 12, 44, 6, 6, 6, 6, 6}
-*****************************************
-Obtained a new solution by moving: J11(3, 1): 2->4
-New machine finishing times: {10, 9, 44, 9, 6, 6, 6, 6}
-*****************************************
-Obtained a new solution by moving: J12(3, 1): 1->5
-New machine finishing times: {7, 9, 44, 9, 9, 6, 6, 6}
-*****************************************
-Obtained a new solution by moving: J18(4, 2): 3->1
-New machine finishing times: {11, 9, 40, 9, 9, 6, 6, 6}
-*****************************************
-Obtained a new solution by moving: J13(3, 1): 1->6
-New machine finishing times: {8, 9, 40, 9, 9, 9, 6, 6}
-*****************************************
-Obtained a new solution by moving: J19(4, 2): 3->1
-New machine finishing times: {12, 9, 36, 9, 9, 9, 6, 6}
-*****************************************
-Obtained a new solution by moving: J17(4, 2): 1->7
-New machine finishing times: {8, 9, 36, 9, 9, 9, 10, 6}
-*****************************************
-Obtained a new solution by moving: J4(3, 1): 7->8
-New machine finishing times: {8, 9, 36, 9, 9, 9, 7, 9}
-*****************************************
-Obtained a new solution by moving: J20(4, 2): 3->1
-New machine finishing times: {12, 9, 32, 9, 9, 9, 7, 9}
-*****************************************
-Obtained a new solution by moving: J18(4, 2): 1->7
-New machine finishing times: {8, 9, 32, 9, 9, 9, 11, 9}
-*****************************************
-Obtained a new solution by moving: J21(4, 2): 3->1
-New machine finishing times: {12, 9, 28, 9, 9, 9, 11, 9}
-*****************************************
-Obtained a new solution by moving: J22(4, 2): 3->1
-New machine finishing times: {16, 9, 24, 9, 9, 9, 11, 9}
-*****************************************
-Obtained a new solution by moving: J19(4, 2): 1->2
-New machine finishing times: {12, 13, 24, 9, 9, 9, 11, 9}
-*****************************************
-Obtained a new solution by moving: J14(3, 1): 2->4
-New machine finishing times: {12, 10, 24, 12, 9, 9, 11, 9}
-*****************************************
-Obtained a new solution by moving: J23(4, 2): 3->1
-New machine finishing times: {16, 10, 20, 12, 9, 9, 11, 9}
-*****************************************
-Obtained a new solution by moving: J20(4, 2): 1->2
-New machine finishing times: {12, 14, 20, 12, 9, 9, 11, 9}
-*****************************************
-Obtained a new solution by moving: J15(3, 1): 2->5
-New machine finishing times: {12, 11, 20, 12, 12, 9, 11, 9}
-*****************************************
-Obtained a new solution by moving: J24(4, 2): 3->1
-New machine finishing times: {16, 11, 16, 12, 12, 9, 11, 9}
-*****************************************
-Obtained a new solution by moving: J21(4, 2): 1->2
-New machine finishing times: {12, 15, 16, 12, 12, 9, 11, 9}
-*****************************************
-Obtained a new solution by moving: J16(3, 1): 2->6
-New machine finishing times: {12, 12, 16, 12, 12, 12, 11, 9}
-*****************************************
-Obtained a new solution by moving: J25(4, 2): 3->7
-New machine finishing times: {12, 12, 12, 12, 12, 12, 15, 9}
-*****************************************
-Obtained a new solution by moving: J9(3, 1): 7->8
-New machine finishing times: {12, 12, 12, 12, 12, 12, 12, 12}
+Extending the node: Layer:6, Upper bound:12, Lower bound:12
+Assignment:[J1(3, 1, 1), J2(3, 1, 4), J3(3, 1, 4), J4(3, 1, 4), J5(3, 1, 4), J6(3, 1, 1), J7(3, 1, 1), J8(3, 1, '?'), J9(4, 2, '?'), J10(4, 2, '?'), J11(4, 2, '?'), J12(4, 2, '?'), J13(4, 2, '?'), J14(4, 2, '?')]
+Current best solution:
+m1 : J1(3, 1), J6(3, 1), J7(3, 1), J8(3, 1) 	 sum: 12, types: 1
+m2 : J9(4, 2), J12(4, 2), J13(4, 2) 	 sum: 12, types: 2
+m3 : J10(4, 2), J11(4, 2), J14(4, 2) 	 sum: 12, types: 2
+m4 : J2(3, 1), J3(3, 1), J4(3, 1), J5(3, 1) 	 sum: 12, types: 1
+Machines finishing_times: {12, 12, 12, 12}
 -----------------------------------------
-Overall number of iterations: 46
-Number of seconds elapsed: 0.501
+Overall number of nodes visited: 6738
+Number of seconds elapsed: 5.808
 The final solution:
-m1 : J22(4, 2), J23(4, 2), J24(4, 2) 	 sum: 12, types: 2
-m2 : J19(4, 2), J20(4, 2), J21(4, 2) 	 sum: 12, types: 2
-m3 : J26(4, 2), J27(4, 2), J28(4, 2) 	 sum: 12, types: 2
-m4 : J1(3, 1), J6(3, 1), J11(3, 1), J14(3, 1) 	 sum: 12, types: 1
-m5 : J2(3, 1), J7(3, 1), J12(3, 1), J15(3, 1) 	 sum: 12, types: 1
-m6 : J3(3, 1), J8(3, 1), J13(3, 1), J16(3, 1) 	 sum: 12, types: 1
-m7 : J17(4, 2), J18(4, 2), J25(4, 2) 	 sum: 12, types: 2
-m8 : J4(3, 1), J5(3, 1), J9(3, 1), J10(3, 1) 	 sum: 12, types: 1
+m1 : J1(3, 1), J6(3, 1), J7(3, 1), J8(3, 1) 	 sum: 12, types: 1
+m2 : J9(4, 2), J12(4, 2), J13(4, 2) 	 sum: 12, types: 2
+m3 : J10(4, 2), J11(4, 2), J14(4, 2) 	 sum: 12, types: 2
+m4 : J2(3, 1), J3(3, 1), J4(3, 1), J5(3, 1) 	 sum: 12, types: 1
 
-Objective function's value: max{12, 12, 12, 12, 12, 12, 12, 12} = 12
+Objective function's value: max{12, 12, 12, 12} = 12
 *Lower bound (not necessarily tight): 12
 
 **output format:
 	m_k is the k'th machine.
-	J_i(P, T) is the i'th job with P processing time and is of type T.
+	J_i(P, T, M) is the i'th job with processing time P, of type T, and is assigned to machine M (marked as '?' when unassigned).
