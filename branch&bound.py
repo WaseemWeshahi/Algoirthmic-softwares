@@ -203,7 +203,7 @@ def upper_bound(jobs):
           mach_dict[m] = (mach_dict[m][0] + j.proc_time, mach_dict[m][1] | set([j.t])) # finishing time, types
           break
       for m in range(num_machines):
-        if len(set([j.t]) | mach_dict[m][1]) <=3: # Wherver is valid.
+        if len(set([j.t]) | mach_dict[m][1]) <=3: # Wherever is valid.
           alt_assignment[ind].mach = m
           mach_dict[m] = (mach_dict[m][0] + j.proc_time, mach_dict[m][1] | set([j.t])) # finishing time, types
           break

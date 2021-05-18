@@ -1,0 +1,19 @@
+# הקלט החצוי
+# number of machines
+4
+# Jobs as pairs of processing time and type
+# 14 jobs
+3,1
+3,1
+3,1
+3,1
+3,1
+3,1
+3,1
+3,1
+4,2
+4,2
+4,2
+4,2
+4,2
+4,2
