@@ -1,0 +1,77 @@
+The problem had 34 jobs that needed to be scheduled on 5 machines.
+Initial solution:
+m1 :  	 sum: 0, types: 
+m2 :  	 sum: 0, types: 
+m3 : J1(9, 2), J2(9, 2), J3(9, 2), J4(9, 2), J5(9, 2), J6(9, 2), J7(9, 2), J8(9, 2), J9(9, 2), J10(9, 2), J25(9, 2), J26(9, 2), J27(9, 2), J28(9, 2), J29(9, 2), J30(9, 2), J31(9, 2), J32(9, 2), J33(9, 2), J34(9, 2) 	 sum: 180, types: 2
+m4 : J11(5, 3), J12(5, 3), J13(5, 3), J14(5, 3), J15(5, 3), J16(5, 3), J17(5, 3), J18(5, 3), J19(5, 3), J20(5, 3) 	 sum: 50, types: 3
+m5 : J21(10, 4), J22(10, 4), J23(10, 4), J24(10, 4) 	 sum: 40, types: 4
+*****************************************
+Obtained a new solution by moving: J1(9, 2): 3->1
+New machine finishing times: {9, 0, 171, 50, 40}
+*****************************************
+Obtained a new solution by moving: J2(9, 2): 3->2
+New machine finishing times: {9, 9, 162, 50, 40}
+*****************************************
+Obtained a new solution by moving: J3(9, 2): 3->1
+New machine finishing times: {18, 9, 153, 50, 40}
+*****************************************
+Obtained a new solution by moving: J4(9, 2): 3->2
+New machine finishing times: {18, 18, 144, 50, 40}
+*****************************************
+Obtained a new solution by moving: J5(9, 2): 3->1
+New machine finishing times: {27, 18, 135, 50, 40}
+*****************************************
+Obtained a new solution by moving: J6(9, 2): 3->2
+New machine finishing times: {27, 27, 126, 50, 40}
+*****************************************
+Obtained a new solution by moving: J7(9, 2): 3->1
+New machine finishing times: {36, 27, 117, 50, 40}
+*****************************************
+Obtained a new solution by moving: J8(9, 2): 3->2
+New machine finishing times: {36, 36, 108, 50, 40}
+*****************************************
+Obtained a new solution by moving: J9(9, 2): 3->1
+New machine finishing times: {45, 36, 99, 50, 40}
+*****************************************
+Obtained a new solution by moving: J10(9, 2): 3->2
+New machine finishing times: {45, 45, 90, 50, 40}
+*****************************************
+Obtained a new solution by moving: J11(5, 3): 4->5
+New machine finishing times: {45, 45, 90, 45, 45}
+*****************************************
+Obtained a new solution by moving: J25(9, 2): 3->1
+New machine finishing times: {54, 45, 81, 45, 45}
+*****************************************
+Obtained a new solution by moving: J26(9, 2): 3->2
+New machine finishing times: {54, 54, 72, 45, 45}
+*****************************************
+Obtained a new solution by moving: J27(9, 2): 3->4
+New machine finishing times: {54, 54, 63, 54, 45}
+*****************************************
+Obtained a new solution by moving: J12(5, 3): 4->5
+New machine finishing times: {54, 54, 63, 49, 50}
+*****************************************
+Obtained a new solution by moving: J28(9, 2): 3->4
+New machine finishing times: {54, 54, 54, 58, 50}
+*****************************************
+Obtained a new solution by moving: J13(5, 3): 4->5
+New machine finishing times: {54, 54, 54, 53, 55}
+*****************************************
+Obtained a new solution by moving: J21(10, 4): 5->4, J27(9, 2): 4->5
+New machine finishing times: {54, 54, 54, 54, 54}
+-----------------------------------------
+Overall number of iterations: 18
+Number of seconds elapsed: 2.445
+The final solution:
+m1 : J1(9, 2), J3(9, 2), J5(9, 2), J7(9, 2), J9(9, 2), J25(9, 2) 	 sum: 54, types: 2
+m2 : J2(9, 2), J4(9, 2), J6(9, 2), J8(9, 2), J10(9, 2), J26(9, 2) 	 sum: 54, types: 2
+m3 : J29(9, 2), J30(9, 2), J31(9, 2), J32(9, 2), J33(9, 2), J34(9, 2) 	 sum: 54, types: 2
+m4 : J28(9, 2), J14(5, 3), J15(5, 3), J16(5, 3), J17(5, 3), J18(5, 3), J19(5, 3), J20(5, 3), J21(10, 4) 	 sum: 54, types: 2, 3, 4
+m5 : J27(9, 2), J11(5, 3), J12(5, 3), J13(5, 3), J22(10, 4), J23(10, 4), J24(10, 4) 	 sum: 54, types: 2, 3, 4
+
+Objective function's value: max{54, 54, 54, 54, 54} = 54
+*Lower bound (not necessarily tight): 54
+
+**output format:
+	m_k is the k'th machine.
+	J_i(P, T) is the i'th job with P processing time and is of type T.

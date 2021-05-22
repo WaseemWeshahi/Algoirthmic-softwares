@@ -17,7 +17,7 @@ m3 : J15(4, 3), J2(5, 3), J3(10, 3), J5(3, 4), J13(7, 5), J10(8, 5), J4(13, 5) 	
 Machines finishing_times: {50, 50, 50}
 -----------------------------------------
 Overall number of nodes visited: 2241
-Number of seconds elapsed: 3.107
+Number of seconds elapsed: 4.159
 The final solution:
 m1 : J14(2, 1), J1(4, 1), J7(8, 1), J19(9, 1), J16(5, 4), J8(9, 4), J9(13, 5) 	 sum: 50, types: 1, 4, 5
 m2 : J6(7, 2), J12(8, 2), J17(8, 2), J18(11, 5), J11(16, 5) 	 sum: 50, types: 2, 5
