@@ -28,7 +28,7 @@ m4 : J28(2, 1), J2(18, 1), J25(19, 1), J8(6, 2), J27(17, 2), J19(18, 2), J39(18,
 Machines finishing_times: {98, 97, 98, 98}
 -----------------------------------------
 Overall number of nodes visited: 32
-Number of seconds elapsed: 0.065
+Number of seconds elapsed: 0.071
 The final solution:
 m1 : J9(3, 1), J4(6, 1), J13(6, 1), J23(7, 1), J30(10, 1), J33(20, 1), J10(10, 4), J38(11, 5), J21(12, 5), J35(13, 5) 	 sum: 98, types: 1, 4, 5
 m2 : J6(2, 3), J22(4, 3), J20(5, 3), J11(6, 3), J18(12, 3), J24(2, 4), J3(3, 4), J34(8, 4), J5(11, 4), J40(11, 4), J17(4, 5), J36(14, 5), J14(15, 5) 	 sum: 97, types: 3, 4, 5
