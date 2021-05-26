@@ -21,7 +21,7 @@ m5 : J2(3, 2), J3(3, 3) 	 sum: 6, types: 2, 3
 Machines finishing_times: {6, 6, 6, 6, 6}
 -----------------------------------------
 Overall number of nodes visited: 62
-Number of seconds elapsed: 0.007
+Number of seconds elapsed: 0.034
 The final solution:
 m1 : J1(3, 2), J8(3, 5) 	 sum: 6, types: 2, 5
 m2 : J9(2, 1), J10(2, 1), J11(2, 1) 	 sum: 6, types: 1
