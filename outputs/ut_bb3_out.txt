@@ -1,45 +1,38 @@
 The problem had 17 jobs that needed to be scheduled on 5 machines.
 *****************************************
 Extending the node: Layer:0, Upper bound:14, Lower bound:12
-Assignment:[J9(4, 2, 1), J10(4, 2, '?'), J11(4, 2, '?'), J12(4, 2, '?'), J13(4, 2, '?'), J14(4, 2, '?'), J15(4, 2, '?'), J16(4, 2, '?'), J17(4, 2, '?'), J1(3, 1, '?'), J2(3, 1, '?'), J3(3, 1, '?'), J4(3, 1, '?'), J5(3, 1, '?'), J6(3, 1, '?'), J7(3, 1, '?'), J8(3, 1, '?')]
+Assignment:[J1(3, 1, 1), J2(3, 1, '?'), J3(3, 1, '?'), J4(3, 1, '?'), J5(3, 1, '?'), J6(3, 1, '?'), J7(3, 1, '?'), J8(3, 1, '?'), J9(4, 2, '?'), J10(4, 2, '?'), J11(4, 2, '?'), J12(4, 2, '?'), J13(4, 2, '?'), J14(4, 2, '?'), J15(4, 2, '?'), J16(4, 2, '?'), J17(4, 2, '?')]
 Current best solution:
-m1 : J1(3, 1), J2(3, 1), J7(3, 1), J9(4, 2) 	 sum: 13, types: 1, 2
-m2 : J3(3, 1), J10(4, 2), J17(4, 2) 	 sum: 11, types: 1, 2
-m3 : J4(3, 1), J11(4, 2), J16(4, 2) 	 sum: 11, types: 1, 2
-m4 : J5(3, 1), J12(4, 2), J15(4, 2) 	 sum: 11, types: 1, 2
-m5 : J6(3, 1), J8(3, 1), J13(4, 2), J14(4, 2) 	 sum: 14, types: 1, 2
-Machines finishing_times: {13, 11, 11, 11, 14}
+m1 : J1(3, 1), J10(4, 2), J14(4, 2) 	 sum: 11, types: 1, 2
+m2 : J2(3, 1), J9(4, 2), J15(4, 2) 	 sum: 11, types: 1, 2
+m3 : J3(3, 1), J8(3, 1), J11(4, 2) 	 sum: 10, types: 1, 2
+m4 : J4(3, 1), J7(3, 1), J12(4, 2), J17(4, 2) 	 sum: 14, types: 1, 2
+m5 : J5(3, 1), J6(3, 1), J13(4, 2), J16(4, 2) 	 sum: 14, types: 1, 2
+Machines finishing_times: {11, 11, 10, 14, 14}
 *****************************************
-Extending the node: Layer:3, Upper bound:13, Lower bound:12
-Assignment:[J9(4, 2, 1), J10(4, 2, 5), J11(4, 2, 5), J12(4, 2, 5), J13(4, 2, '?'), J14(4, 2, '?'), J15(4, 2, '?'), J16(4, 2, '?'), J17(4, 2, '?'), J1(3, 1, '?'), J2(3, 1, '?'), J3(3, 1, '?'), J4(3, 1, '?'), J5(3, 1, '?'), J6(3, 1, '?'), J7(3, 1, '?'), J8(3, 1, '?')]
+Extending the node: Layer:7, Upper bound:13, Lower bound:12
+Assignment:[J1(3, 1, 1), J2(3, 1, 5), J3(3, 1, 5), J4(3, 1, 5), J5(3, 1, 5), J6(3, 1, 4), J7(3, 1, 4), J8(3, 1, 4), J9(4, 2, '?'), J10(4, 2, '?'), J11(4, 2, '?'), J12(4, 2, '?'), J13(4, 2, '?'), J14(4, 2, '?'), J15(4, 2, '?'), J16(4, 2, '?'), J17(4, 2, '?')]
 Current best solution:
-m1 : J2(3, 1), J3(3, 1), J8(3, 1), J9(4, 2) 	 sum: 13, types: 1, 2
-m2 : J1(3, 1), J4(3, 1), J7(3, 1), J13(4, 2) 	 sum: 13, types: 1, 2
-m3 : J5(3, 1), J14(4, 2), J17(4, 2) 	 sum: 11, types: 1, 2
-m4 : J6(3, 1), J15(4, 2), J16(4, 2) 	 sum: 11, types: 1, 2
-m5 : J10(4, 2), J11(4, 2), J12(4, 2) 	 sum: 12, types: 2
-Machines finishing_times: {13, 13, 11, 11, 12}
-*****************************************
-Extending the node: Layer:8, Upper bound:12, Lower bound:12
-Assignment:[J9(4, 2, 1), J10(4, 2, 5), J11(4, 2, 5), J12(4, 2, 5), J13(4, 2, 4), J14(4, 2, 4), J15(4, 2, 4), J16(4, 2, 1), J17(4, 2, 1), J1(3, 1, '?'), J2(3, 1, '?'), J3(3, 1, '?'), J4(3, 1, '?'), J5(3, 1, '?'), J6(3, 1, '?'), J7(3, 1, '?'), J8(3, 1, '?')]
-Current best solution:
-m1 : J9(4, 2), J16(4, 2), J17(4, 2) 	 sum: 12, types: 2
-m2 : J1(3, 1), J4(3, 1), J5(3, 1), J8(3, 1) 	 sum: 12, types: 1
-m3 : J2(3, 1), J3(3, 1), J6(3, 1), J7(3, 1) 	 sum: 12, types: 1
-m4 : J13(4, 2), J14(4, 2), J15(4, 2) 	 sum: 12, types: 2
-m5 : J10(4, 2), J11(4, 2), J12(4, 2) 	 sum: 12, types: 2
-Machines finishing_times: {12, 12, 12, 12, 12}
------------------------------------------
-Overall number of nodes visited: 13262
-Number of seconds elapsed: 12.046
-The final solution:
-m1 : J9(4, 2), J16(4, 2), J17(4, 2) 	 sum: 12, types: 2
-m2 : J1(3, 1), J4(3, 1), J5(3, 1), J8(3, 1) 	 sum: 12, types: 1
-m3 : J2(3, 1), J3(3, 1), J6(3, 1), J7(3, 1) 	 sum: 12, types: 1
-m4 : J13(4, 2), J14(4, 2), J15(4, 2) 	 sum: 12, types: 2
-m5 : J10(4, 2), J11(4, 2), J12(4, 2) 	 sum: 12, types: 2
+m1 : J1(3, 1), J11(4, 2), J14(4, 2) 	 sum: 11, types: 1, 2
+m2 : J9(4, 2), J13(4, 2), J15(4, 2) 	 sum: 12, types: 2
+m3 : J10(4, 2), J12(4, 2), J16(4, 2) 	 sum: 12, types: 2
+m4 : J6(3, 1), J7(3, 1), J8(3, 1), J17(4, 2) 	 sum: 13, types: 1, 2
+m5 : J2(3, 1), J3(3, 1), J4(3, 1), J5(3, 1) 	 sum: 12, types: 1
+Machines finishing_times: {11, 12, 12, 13, 12}
 
-Objective function's value: max{12, 12, 12, 12, 12} = 12
+
+Process was terminated upon Keyboard interrupt, here is the latest solution:
+-----------------------------------------
+Overall number of nodes visited: 371245
+Number of seconds elapsed: 325.617
+The final solution:
+m1 : J1(3, 1), J11(4, 2), J14(4, 2) 	 sum: 11, types: 1, 2
+m2 : J9(4, 2), J13(4, 2), J15(4, 2) 	 sum: 12, types: 2
+m3 : J10(4, 2), J12(4, 2), J16(4, 2) 	 sum: 12, types: 2
+m4 : J6(3, 1), J7(3, 1), J8(3, 1), J17(4, 2) 	 sum: 13, types: 1, 2
+m5 : J2(3, 1), J3(3, 1), J4(3, 1), J5(3, 1) 	 sum: 12, types: 1
+
+Objective function's value: max{11, 12, 12, 13, 12} = 13
 *Lower bound (not necessarily tight): 12
 
 **output format:

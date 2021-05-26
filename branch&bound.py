@@ -333,7 +333,7 @@ if __name__ == '__main__':
   jobs = deep_copy_job_list(orig_jobs)
 
   start = time.time()
-  jobs = sorted(jobs, key=lambda x: x.proc_time, reverse=True)
+  #jobs = sorted(jobs, key=lambda x: x.proc_time, reverse=True)
   sol = branch_and_bound(jobs)
   print("%d seconds elapsed" % (time.time()-start))
   output = output_solution(sol, time.time()-start)
