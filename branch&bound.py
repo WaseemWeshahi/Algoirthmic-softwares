@@ -182,8 +182,8 @@ def upper_bound(jobs):
 
   mach_dict = dict(zip(range(num_machines), mach_meta_data))
 
-  #unassigned_jobs = sorted([(ind,j) for ind,j in enumerate(jobs) if j.mach == '?'], key=lambda x: len(x[1]), reverse=True)
-  unassigned_jobs = [(ind,j) for ind,j in enumerate(jobs) if j.mach == '?']
+  unassigned_jobs = sorted([(ind,j) for ind,j in enumerate(jobs) if j.mach == '?'], key=lambda x: len(x[1]), reverse=True)
+  #unassigned_jobs = [(ind,j) for ind,j in enumerate(jobs) if j.mach == '?']
   for (ind, j) in unassigned_jobs:
     mach_dict = dict(sorted(mach_dict.items(), key=lambda x: x[1][0]))
     for m in mach_dict:
