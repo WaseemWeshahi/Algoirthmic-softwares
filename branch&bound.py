@@ -182,8 +182,8 @@ def upper_bound(jobs):
 
   mach_dict = dict(zip(range(num_machines), mach_meta_data))
 
-  unassigned_jobs = sorted([(ind,j) for ind,j in enumerate(jobs) if j.mach == '?'], key=lambda x: len(x[1]), reverse=False)
-  #unassigned_jobs = [(ind,j) for ind,j in enumerate(jobs) if j.mach == '?']
+  #unassigned_jobs = sorted([(ind,j) for ind,j in enumerate(jobs) if j.mach == '?'], key=lambda x: len(x[1]), reverse=True)
+  unassigned_jobs = [(ind,j) for ind,j in enumerate(jobs) if j.mach == '?']
   for (ind, j) in unassigned_jobs:
     mach_dict = dict(sorted(mach_dict.items(), key=lambda x: x[1][0]))
     for m in mach_dict:
@@ -333,7 +333,7 @@ if __name__ == '__main__':
   jobs = deep_copy_job_list(orig_jobs)
 
   start = time.time()
-  #jobs = sorted(jobs, key=lambda x: x.proc_time, reverse=False)
+  jobs = sorted(jobs, key=lambda x: x.proc_time, reverse=True)
   sol = branch_and_bound(jobs)
   print("%d seconds elapsed" % (time.time()-start))
   output = output_solution(sol, time.time()-start)
