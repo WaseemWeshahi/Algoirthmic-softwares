@@ -1,26 +1,30 @@
 The algorithm behind the attached program works the following:
 
-Initial solution: We send every job of type _t to the machine _t%m (modulo)
+We maintain a stack, that we initially insert a node corresponding to the solution where the first job is assigned to the first machine.
 
-At every iteration, we look for a better (not necessarily best!) neighbour, then we view it as our main solution,
-and we keep looking for better and better neighbours until we either reach the lower bound** or when we stop finding "better" neighbours.
+At every iteration, we pop an element from the stack, and we "handle the node", when after we handle it, we get two "flags" that indicate
+whether we should update the current best solution (which starts as a solution with infinite time) and whether should we terminate this node
+or cut it off, in case we decide we want to check the node's children, then we create "m" new nodes, each assigning the node's next unassigned job to another machine and add the children to the stack.
 
-The way we look for a neighbour* is as follows:
+The way we handle a node is as follows:
 
-	1. We run over each job, and try to move it to every possible machine.
+- Calculate upper bound (returns a possible solution as well)
 
-	2. We run over each pair of jobs, and try to move them to every possible pair of machines (m^2 possibilities).
+- Calculate lower bound.
 
-	3. We run over each triplet of jobs, and try to move them to every possible triplet of machines.
+* mark upper bound as U, lower bound as L, and current best time as V.
 
-	4. We run over every pair of (type, machine) pair (so we have ((t1,m1),(t2,m2)) ), and decide to send each job with the attributes (type, machine)
-	   to another specific machine.
+	1. if L>=V, we should cut this node off, no need to update best solution, we return.
+	2. if U<V, we mark that we should update (we do not return yet)
+	3. if U==V, then we should cut this node off, and return. (if we've marked that we should update the current solution, we do just that and return)
+	4. else, we do not cut the node off and we return whatever we marked in terms of should we update the best solution or not.
 
-The moment we find a "better" solution, we return it.
+We calculate the lower bound rather simply, we take the maximum between jobs' process times, sum of those times divided (Cieled) by num of machines, and the machines times on the partial solution of the node.
 
-The way we determine if a solution is "better" or not, is by looking at the maximum value of finishing times but only on the machines involved in the swithcing.
+Upper bound is calculated as follows:
+	We move over unassigned jobs (longer to shorter) and for each job, we move over the machines in ascending order according to their finishing times, and we assign the job to the first machine that we can assign it to, as in, it does not conflict with the types constraint.
+	We can however reach a state of a "deadlock", so if we finish this LPT approach and there are still unassigned jobs, then we "undo" the assignments that we've just performed, and then for each unassigned job, we assign them to the first machine (again, ascending in finishing times) that already contains its type, if none is found, we assign it to the machine that assigning the job to it does not conflict with the types constraint.
+	If after all this we reach a deadlock, we assign all the unassigned jobs to arbitrary machine, and we return the solution and mark its finishing time as "infinity".
 
-* We only consider "valid neighbours", as in, solutions that do not have more than 3 different distinct types.
 
-** We can change this condition so that we keep looking for new placements and neighbours until we get a more balanced solution,
-   but it is costly so it was only applied for smaller inputs.
+* We sort the jobs in descending fashion in respect to their process times when we first get the jobs and before activating the algorithm.

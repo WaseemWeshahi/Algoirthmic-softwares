@@ -20,7 +20,13 @@ num_jobs = 0
 
 log = ''
 
-num_nodes = 1
+num_gen = 1
+
+num_chrom = 100
+
+prop_mutation = 0.02
+
+max_sum = 0
 
 def get_id():
   global num_jobs
@@ -32,7 +38,7 @@ class Job:
     if is_new:
       self.ind = get_id()
     self.proc_time = proc_time
-    self.t = _type
+    self.t = 1 # NOTE: for the genetic algorithm, we ditvh the types constraint!
     self.mach = '?'
 
   def __repr__(self):
@@ -82,9 +88,11 @@ class Solution:
     self.machine_types = [set([j.t for j in m]) for m in self.machines]
 
   def is_valid(self):
+    '''
     for i in range(num_machines):
       if len(self.machine_types[i]) > 3:
         return False
+    '''
     return True
 
   def finishing_times(self):
@@ -102,79 +110,108 @@ class Solution:
   def __str__(self):
     return '\n'.join(['m%d : %s \t sum: %d, types: %s' % (ind+1, format_list(sorted(jobs_list)), self.machine_sums[ind], format_list(self.machine_types[ind])) for ind, jobs_list in enumerate(self.machines)])
 
-class Node:
-  def __init__(self, jobs_list, layer=0):
-    self.jobs_list = jobs_list
-    self.layer = layer
-
-  def create_children(self):
-    if self.layer >= num_jobs - 1:
-      return []
-
-    children = []
-    for m in range(num_machines):
-      new_jobs_list = deep_copy_job_list(self.jobs_list)
-      new_jobs_list[self.layer+1].mach = m
-      if Solution(new_jobs_list).is_valid():
-        children.append(Node(new_jobs_list, self.layer+1))
-    return children
-
-  def handle_node(self, V):
-    '''
-    returns: should terminate?
-    '''
-    global num_nodes
-    num_nodes += 1
-    self.upper, self.possible_sol = upper_bound(self.jobs_list)
-    self.lower = lower_bound(self.jobs_list)
-    (should_terminate, should_update) = (True, False)
-    print(self)
-    #import pdb;pdb.set_trace()
-    if self.lower >= V:
-      return (True, False)
-    if self.upper < V:
-      should_update = True
-    if self.upper == self.lower:
-      return (True, should_update)
-
-    return (False, should_update)
-
-  def __repr__(self):
-    return 'Layer:%d, Upper bound:%r, Lower bound:%r\nAssignment:%r' \
-      % (self.layer, getattr(self, 'upper', float('inf')), getattr(self, 'lower', -1), self.jobs_list)
-
-  def __str__(self):
-    return self.__repr__()
-
 def format_list(list):
   return ', '.join([str(x) for x in list])
 
-def get_index(jobs, ind):
-  for index, job in enumerate(jobs):
-    if job.ind == ind:
-      return index
-  return -1
-
 def global_lower_bound(jobs):
   proc_times = [j.proc_time for j in jobs]
-  times_sum = sum(proc_times)
-  return max(proc_times + [math.ceil(times_sum/num_machines)])
-
-def lower_bound(jobs):
-  '''
-  Give a lower bound given jobs that may be partially assigned
-  '''
-  proc_times = [j.proc_time for j in jobs]
-  times_sum = sum(proc_times)
-  return max(proc_times + [math.ceil(times_sum/num_machines)] + Solution(jobs).finishing_times())
+  return max(proc_times + [math.ceil(max_sum/num_machines)])
 
 def job_len(tup):
   return len(tup[1])
 
-def upper_bound(jobs):
+def return_stat(generation):
+  #TODO
+  pass
+def mutate(current_generation, competence):
+  '''
+  Perform mutations
+  '''
+  try:
+    mutated_index = random.choices(range(num_chrom), weights=competence)[0]
+  except ValueError:
+    import pdb;pdb.set_trace()
+  mutated_chrom = current_generation[mutated_index]
+
+  # Replacement or??
+  changed_index = random.choice(range(num_jobs))
+  changed_val = random.choice(range(1, num_jobs))
+
+  mutated_chrom[changed_index] = (mutated_chrom[changed_index] + changed_val) % num_machines # Do machines start with 0 or 1?
+  
+  return mutated_chrom
+
+def reproduce(current_generation, competence):
+  '''
+  return a new chromosome as a result of merging two chromosomes.
+  '''
+  parent_index_1, parent_index_2 = random.choices(range(num_chrom), weights=competence, k=2)
+  parent1 = current_generation[parent_index_1]
+  parent2 = current_generation[parent_index_2]
+
+  cutoff_index = random.choice(range(num_jobs+1)) # Maybe lose the +1
+
+  new_chrom1 = parent1[:cutoff_index] + parent2[cutoff_index:]
+  new_chrom2 = parent2[:cutoff_index] + parent1[cutoff_index:]
+
+  return new_chrom1, new_chrom2
+
+def chrom_is_valid(chrom):
+  '''
+  Return true if the solution this chromosome is representing is valid
+  '''
+  return True
+
+def create_next_generation(current_generation, competence):
+  new_generation = []
+
+  # Pass mutations
+  new_generation.append(mutate(current_generation, competence))
+  new_generation.append(mutate(current_generation, competence))
+
+  while len(new_generation) < num_chrom:
+    new_chrom1, new_chrom2 = reproduce(current_generation, competence)
+    new_generation.append(new_chrom1)
+    new_generation.append(new_chrom2)
+
+  return new_generation[:num_chrom]
+
+def chrom_to_sol(chrom):
+  jobs = deep_copy_job_list(orig_jobs)
+  for i in range(num_jobs):
+    jobs[i].mach = chrom[i]
+
+  return Solution(jobs)
+
+def assignment_to_chrom(assignment):
+  return [x.mach for x in assignment]
+
+def calc_competence(chrom):
+  '''
+  return the competence value of a given chromosome.
+  '''
+  x = chrom_to_sol(chrom).finishing_time()
+  # Option A:
+  comp = max_sum - x
+  # Option B:
+  # comp = 1 / (x**2)
+  return comp
+
+def get_best_sol(generation):
+  '''
+  Obtains the best solution in the given generation
+  '''
+  sols = [chrom_to_sol(chrom) for chrom in generation]
+  best_index, best_val = min([(i, j) for i, j in enumerate([sol.finishing_time() for sol in sols])])
+
+  return sols[best_index], best_val
+
+def create_LPT_chrom(jobs):
   '''
   Give an upper bound given jobs that may be partially assigned
   '''
+  for i in range(num_jobs):
+    jobs[i].mach = '?'
   possible_assignment = deep_copy_job_list(jobs)
   alt_assignment = deep_copy_job_list(possible_assignment)
   partial_solution = Solution(possible_assignment)
@@ -193,6 +230,8 @@ def upper_bound(jobs):
         break
 
   # If LPT fails..
+  # LPT Never fails now!
+  '''
   if not all([j.mach != '?' for j in possible_assignment]):
     mach_meta_data = list(zip(partial_solution.finishing_times(), partial_solution.machine_types))
     mach_dict = dict(zip(range(num_machines), mach_meta_data))
@@ -213,63 +252,66 @@ def upper_bound(jobs):
     for ind, j in enumerate(possible_assignment):
       if j.mach == '?':
         possible_assignment[ind].mach = 0
-    return float('inf'), Solution(possible_assignment)
-
-  sol = Solution(possible_assignment)
-
-  proc_times = [j.proc_time for j in jobs]
-  times_sum = sum(proc_times)
-
-  return sol.finishing_time(), sol
-
-def get_diff(old_assignment, new_assignment):
-  diff_indices = [ind for ind in range(num_jobs) if old_assignment[ind].mach != new_assignment[ind].mach]
-
-  diff_str = ', '.join(['%s: %d->%d' % (new_assignment[ind], old_assignment[ind].mach+1, new_assignment[ind].mach+1) for ind in diff_indices])
-  return 'Obtained a new solution by moving: ' + diff_str + '\nNew machine finishing times: {%s}\n' % format_list(Solution(new_assignment).finishing_times())
-
-def create_naive_solution(jobs):
   '''
-  produce a naive solution, which is assigning jobs with type t to machine t%m
+  return assignment_to_chrom(possible_assignment)
+
+def create_naive_chrom(jobs):
+  chrom = [i % num_machines for i in range(len(jobs))]
+  return chrom
+
+def create_random_chrom(jobs):
+  chrom = [random.randrange(num_machines) for x in jobs]
+  return chrom
+
+def create_a_chrom(jobs, opcode):
   '''
-  naive_assignment = deep_copy_job_list(jobs)
-  for i, job in enumerate(jobs):
-    naive_assignment[i].mach = job.t % num_machines
-
-  return naive_assignment, Solution(naive_assignment)
-
-def cart_squared(list):
-  return [(i,j) for i in list for j in list]
-
-def cart_cubed(list):
-  return [(i,j,k) for i in list for j in list for k in list]
-
-def cart_quart(list):
-  return [(i,j,k,l) for i in list for j in list for k in list for l in list]
-
-def branch_and_bound(jobs):
+  produce a chromosome using the method specified in opcode
   '''
-  peform a branch and bound approach to find the optimal solution.
+  if opcode == "naive":
+    chrom = create_naive_chrom(jobs)
+  if opcode == "random":
+    chrom = create_random_chrom(jobs)
+  if opcode == "lpt":
+    chrom = create_LPT_chrom(jobs)
+  return chrom
+
+def create_init_generation(jobs):
+  '''
+  produce the first generation
+  '''
+  first_gen = []
+
+  first_gen.append(create_a_chrom(jobs, "naive"))
+  first_gen.append(create_a_chrom(jobs, "lpt"))
+  while len(first_gen) < num_chrom:
+    chrom = create_a_chrom(jobs, "random")
+    first_gen.append(chrom)
+
+  return first_gen
+
+
+def genetic_algorithm(jobs):
+  '''
+  peform a genetic algorithm approach to find the optimal solution.
   '''
   assert jobs, 'No jobs to be scheduled..'
-  global log
+  global log, max_sum, num_gen
+  max_sum = sum([j.proc_time for j in jobs])
   try:
-    jobs[0].mach = 0
-    active_queue = [Node(jobs)]
-    best_sol = None
-    best_time = float('inf')
-    while active_queue:
-      cur_node = active_queue.pop()
-      should_terminate, should_update = cur_node.handle_node(best_time)
-      if should_update:
-        best_sol = cur_node.possible_sol
-        best_time = cur_node.upper
-        log += '*****************************************\nExtending the node: %s\n' % (cur_node)
-        log += 'Current best solution:\n%s\n' % cur_node.possible_sol
-        log += 'Machines finishing_times: {%s}\n' % format_list(cur_node.possible_sol.finishing_times())
-      if not should_terminate:
-        children = cur_node.create_children()
-        active_queue.extend(children)
+    current_generation = create_init_generation(jobs)
+    best_sol, best_time = get_best_sol(current_generation)
+    lp = global_lower_bound(jobs)
+    while best_time > lp:
+      print('Creating a new generation')
+      competence = [calc_competence(x) for x in current_generation]
+      current_generation = create_next_generation(current_generation, competence)
+      best_sol_in_gen, best_time_in_gen = get_best_sol(current_generation)
+      num_gen += 1
+      if best_time_in_gen < best_time:
+        best_time = best_time_in_gen
+        best_sol = best_sol_in_gen
+        print('Found a better solution with finishing time %d:' % best_time)
+        print(best_sol)
 
     return best_sol
 
@@ -315,7 +357,7 @@ def output_solution(sol, tiempo):
   output += 'The problem had %d jobs that needed to be scheduled on %d machines.\n' % (num_jobs, num_machines)
   output += log
   output += '-----------------------------------------\n'
-  output += 'Overall number of nodes visited: %d\n' % num_nodes
+  output += 'Overall number of generations created: %d\n' % num_gen
   output += 'Number of seconds elapsed: %.3f\n' % tiempo
   output += 'The final solution:\n'
   output += '%s' % sol
@@ -332,8 +374,8 @@ if __name__ == '__main__':
   jobs = deep_copy_job_list(orig_jobs)
 
   start = time.time()
-  jobs = sorted(jobs, key=lambda x: x.proc_time, reverse=True)
-  sol = branch_and_bound(jobs)
+  #jobs = sorted(jobs, key=lambda x: x.proc_time, reverse=True)
+  sol = genetic_algorithm(jobs)
   print("%d seconds elapsed" % (time.time()-start))
   output = output_solution(sol, time.time()-start)
   out = open(output_file, 'w', encoding="utf8")
