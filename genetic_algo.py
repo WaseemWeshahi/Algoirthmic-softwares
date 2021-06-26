@@ -9,6 +9,12 @@ from numpy import argsort
 input_file = sys.argv[1]
 # The output file
 output_file = sys.argv[2]
+# The log file
+log_file = output_file.replace('.txt', '_log.txt')
+# competence function to be used
+comp_cmd = int(sys.argv[3]) if len(sys.argv) >= 4 else 8
+# num of chromes per generation
+num_chrom = int(sys.argv[4]) if len(sys.argv) >= 5 else 100
 # Number of machines
 num_machines = 0
 # Number of maximum types
@@ -20,13 +26,18 @@ num_jobs = 0
 
 log = ''
 
+out = ''
+
 num_gen = 1
 
-num_chrom = 100
 
 prop_mutation = 0.02
 
 max_sum = 0
+
+print_freq = 20
+
+MAX_GEN = 5000
 
 def get_id():
   global num_jobs
@@ -38,7 +49,7 @@ class Job:
     if is_new:
       self.ind = get_id()
     self.proc_time = proc_time
-    self.t = 1 # NOTE: for the genetic algorithm, we ditvh the types constraint!
+    self.t = 1 # NOTE: for the genetic algorithm, we ditch the types constraint!
     self.mach = '?'
 
   def __repr__(self):
@@ -88,11 +99,6 @@ class Solution:
     self.machine_types = [set([j.t for j in m]) for m in self.machines]
 
   def is_valid(self):
-    '''
-    for i in range(num_machines):
-      if len(self.machine_types[i]) > 3:
-        return False
-    '''
     return True
 
   def finishing_times(self):
@@ -120,9 +126,31 @@ def global_lower_bound(jobs):
 def job_len(tup):
   return len(tup[1])
 
-def return_stat(generation):
-  #TODO
-  pass
+def print_chrom(chrom):
+  return format_list([x+1 for x in chrom])
+
+def print_chrom_comp(chrom):
+  return ''.join([str(x+1) for x in chrom])
+
+def print_generation_comp(generation, competence):
+  return '\n'.join([('OFV: %d, competence: %r\t' % (chrom_to_sol(x).finishing_time() ,competence[ind])) + print_chrom_comp(x) for ind, x in enumerate(generation)])
+
+def return_stat(generation, competence, format='compact'):
+  stat_log = ''
+  if format == 'compact':
+    _, best_val, best_index = get_best_sol(generation)
+    stat_log += 'Best chromosome in current generation:\nOFV: %d, competence: %r\t%s\n' % (best_val, competence[best_index], print_chrom_comp(generation[best_index]))
+    stat_log += 'Number of unique chromosomes (out of %d chromosomes in total): %d\n' % (num_chrom, len(set([print_chrom(x) for x in generation])))
+  else:
+    _, best_val, best_index = get_best_sol(generation)
+    stat_log += 'Best chromosome in current generation with value: %d, competence: %r:\n%s\n' % \
+    (best_val, competence[best_index], print_chrom_comp(generation[best_index]))
+    stat_log += 'Number of unique chromosomes (out of %d chromosomes in total): %d\n' % (num_chrom, len(set([print_chrom(x) for x in generation])))
+    stat_log += 'Entire generation:\n'
+    stat_log += print_generation_comp(generation, competence) + '\n'
+
+  return stat_log
+
 def mutate(current_generation, competence):
   '''
   Perform mutations
@@ -135,7 +163,7 @@ def mutate(current_generation, competence):
 
   # Replacement or??
   changed_index = random.choice(range(num_jobs))
-  changed_val = random.choice(range(1, num_jobs))
+  changed_val = random.choice(range(1, num_machines))
 
   mutated_chrom[changed_index] = (mutated_chrom[changed_index] + changed_val) % num_machines # Do machines start with 0 or 1?
   
@@ -145,7 +173,8 @@ def reproduce(current_generation, competence):
   '''
   return a new chromosome as a result of merging two chromosomes.
   '''
-  parent_index_1, parent_index_2 = random.choices(range(num_chrom), weights=competence, k=2)
+  parent_index_1 = random.choices(range(num_chrom), weights=competence)[0]
+  parent_index_2 = random.choices(range(num_chrom), weights=competence)[0]
   parent1 = current_generation[parent_index_1]
   parent2 = current_generation[parent_index_2]
 
@@ -166,8 +195,8 @@ def create_next_generation(current_generation, competence):
   new_generation = []
 
   # Pass mutations
-  new_generation.append(mutate(current_generation, competence))
-  new_generation.append(mutate(current_generation, competence))
+  for _ in range(round(num_chrom*prop_mutation)):
+    new_generation.append(mutate(current_generation, competence))
 
   while len(new_generation) < num_chrom:
     new_chrom1, new_chrom2 = reproduce(current_generation, competence)
@@ -190,21 +219,32 @@ def calc_competence(chrom):
   '''
   return the competence value of a given chromosome.
   '''
-  x = chrom_to_sol(chrom).finishing_time()
+  Y = chrom_to_sol(chrom).finishing_time()
+  X = max_sum / num_machines
   # Option A:
-  comp = max_sum - x
-  # Option B:
-  # comp = 1 / (x**2)
-  return comp
+  #comp = max_sum - x
+  return {
+    1 : 1/Y,
+    2 : 1/(Y**2),
+    3 : 1/(Y)**0.5,
+    4 : 1/Y**3,
+    5 : 1/(2*Y-X),
+    6 : 1/(Y-X+1),
+    7 : 1/(3*Y-2*X),
+    8 : 1/(Y-X+1)**2,
+    9 : 1/(Y-X+1)**3,
+    10 : 1/(Y-X+1)**0.5,
+    11 : max([2*X-Y+1, 1]),
+  }.get(comp_cmd, 1)
 
 def get_best_sol(generation):
   '''
   Obtains the best solution in the given generation
   '''
   sols = [chrom_to_sol(chrom) for chrom in generation]
-  best_index, best_val = min([(i, j) for i, j in enumerate([sol.finishing_time() for sol in sols])])
+  best_val, best_index = min([(j, i) for i, j in enumerate([sol.finishing_time() for sol in sols])])
 
-  return sols[best_index], best_val
+  return sols[best_index], best_val, best_index
 
 def create_LPT_chrom(jobs):
   '''
@@ -229,30 +269,6 @@ def create_LPT_chrom(jobs):
         mach_dict[m] = (mach_dict[m][0] + j.proc_time, mach_dict[m][1] | set([j.t])) # finishing time, types
         break
 
-  # If LPT fails..
-  # LPT Never fails now!
-  '''
-  if not all([j.mach != '?' for j in possible_assignment]):
-    mach_meta_data = list(zip(partial_solution.finishing_times(), partial_solution.machine_types))
-    mach_dict = dict(zip(range(num_machines), mach_meta_data))
-    for (ind, j) in unassigned_jobs:
-      for m in range(num_machines):
-        if j.t in mach_dict[m][1]: # Wherever is available.
-          alt_assignment[ind].mach = m
-          mach_dict[m] = (mach_dict[m][0] + j.proc_time, mach_dict[m][1] | set([j.t])) # finishing time, types
-          break
-      for m in range(num_machines):
-        if len(set([j.t]) | mach_dict[m][1]) <=3: # Wherever is valid.
-          alt_assignment[ind].mach = m
-          mach_dict[m] = (mach_dict[m][0] + j.proc_time, mach_dict[m][1] | set([j.t])) # finishing time, types
-          break
-    possible_assignment = deep_copy_job_list(alt_assignment)
-
-  if not all([j.mach != '?' for j in possible_assignment]):
-    for ind, j in enumerate(possible_assignment):
-      if j.mach == '?':
-        possible_assignment[ind].mach = 0
-  '''
   return assignment_to_chrom(possible_assignment)
 
 def create_naive_chrom(jobs):
@@ -295,28 +311,48 @@ def genetic_algorithm(jobs):
   peform a genetic algorithm approach to find the optimal solution.
   '''
   assert jobs, 'No jobs to be scheduled..'
-  global log, max_sum, num_gen
+  global log, max_sum, num_gen, out
   max_sum = sum([j.proc_time for j in jobs])
   try:
     current_generation = create_init_generation(jobs)
-    best_sol, best_time = get_best_sol(current_generation)
+    best_sol, best_time, _ = get_best_sol(current_generation)
     lp = global_lower_bound(jobs)
-    while best_time > lp:
+    log += '**********************************************************************'*3 + '\n'
+    log += 'printing Initial generation:\n'
+    log += return_stat(current_generation, [calc_competence(x) for x in current_generation], format='full')
+    out += '**********************************************************************'*3 + '\n'
+    out += 'printing Initial generation:\n'
+    out += return_stat(current_generation, [calc_competence(x) for x in current_generation], format='compact')
+    while best_time > lp and num_gen < MAX_GEN:
+      to_print = not(num_gen % print_freq)
+      new_best = False
+
       print('Creating a new generation')
       competence = [calc_competence(x) for x in current_generation]
       current_generation = create_next_generation(current_generation, competence)
-      best_sol_in_gen, best_time_in_gen = get_best_sol(current_generation)
-      num_gen += 1
+      best_sol_in_gen, best_time_in_gen, _ = get_best_sol(current_generation)
       if best_time_in_gen < best_time:
+        new_best = True
         best_time = best_time_in_gen
         best_sol = best_sol_in_gen
         print('Found a better solution with finishing time %d:' % best_time)
         print(best_sol)
+      if to_print or new_best:
+        if new_best:
+          out += '**********************************************************************'*3 + '\n'
+          out += 'New best solution found in generation: %d\n' % num_gen
+          out += return_stat(current_generation, competence, format='compact')
+        log += '**********************************************************************'*3 + '\n'
+        log += 'Printing generation: %d\n' % num_gen
+        log += return_stat(current_generation, competence, format='full')
+
+      num_gen = num_gen + 1 if best_time > lp else num_gen 
+
 
     return best_sol
 
   except KeyboardInterrupt:
-    log += '\n\nProcess was terminated upon Keyboard interrupt, here is the latest solution:\n'
+    out += '\n\nProcess was terminated upon Keyboard interrupt, here is the latest solution:\n'
     return best_sol
 
 def handle_file(filepath):
@@ -348,14 +384,14 @@ def output_solution(sol, tiempo):
   '''
   Output the solution to the specified file
   '''
-  global log
+  global out
   output = ''
   if not sol:
     output = 'There is no solution for such input!'
     return output
 
   output += 'The problem had %d jobs that needed to be scheduled on %d machines.\n' % (num_jobs, num_machines)
-  output += log
+  output += out
   output += '-----------------------------------------\n'
   output += 'Overall number of generations created: %d\n' % num_gen
   output += 'Number of seconds elapsed: %.3f\n' % tiempo
@@ -378,6 +414,10 @@ if __name__ == '__main__':
   sol = genetic_algorithm(jobs)
   print("%d seconds elapsed" % (time.time()-start))
   output = output_solution(sol, time.time()-start)
-  out = open(output_file, 'w', encoding="utf8")
-  out.write(output)
-  out.close()
+  out_file = open(output_file, 'w', encoding="utf8")
+  out_file.write(output)
+  out_file.close()
+
+  log_file = open(log_file, 'w', encoding="utf8")
+  log_file.write(log)
+  log_file.close()

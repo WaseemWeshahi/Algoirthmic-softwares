@@ -2,3 +2,5 @@
 *.zip
 outputs/temp.txt
 tt.txt
+FinalResults.xlsx
+genetic_outputs/output_8k_4_c8_log.txt
