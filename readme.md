@@ -5,7 +5,7 @@
 Scheduling with types to minimize the makespan.
 
 - Input: An integer number of (identical) machines m ≥ 2. A set of n jobs J =
-{1, 2, . . . , n}, where every job j has an integer processing time p~j~ > 0 and a positive
+{1, 2, . . . , n}, where every job j has an integer processing time p~j > 0 and a positive
 integer type t~j ∈ {1, 2, 3, . . . , 7}.
 
 - Goal: Find a partition of the jobs of to the machines, J~1~, J~2~, . . . , J~m~, such that every
