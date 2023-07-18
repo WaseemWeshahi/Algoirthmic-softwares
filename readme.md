@@ -1,5 +1,5 @@
 ## Optimization algorithm implementation
-### [Problem description](../problems_4_projects_2021.pdf)
+### [Problem description](/problems_4_projects_2021.pdf)
 
 The algorithm behind the attached program works the following:
 
