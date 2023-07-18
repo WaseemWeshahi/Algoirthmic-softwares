@@ -11,7 +11,8 @@ integer type t<sub>j</sub> ∈ {1, 2, 3, . . . , 7}.
 - Goal: Find a partition of the jobs of to the machines, J<sub>1</sub>, J<sub>2</sub>, . . . , J<sub>m</sub>, such that every
 subset has jobs of at most three types (for any i there are three values {k<sub><sub>i<sub>1</sub></sub></sub>
 , k<sub><sub>i<sub>2</sub></sub></sub>
-, k<sub><sub>i<sub>3</sub></sub></sub> ∈
+, k<sub><sub>i<sub>3</sub></sub></sub>
+}∈
 {1, 2, 3, . . . , 7}, such that if j ∈ J<sub>i</sub>
 , then <sub>t</sub><sub>j</sub> ∈ {k<sub><sub>i<sub>1</sub></sub></sub>
 , k<sub><sub>i<sub>2</sub></sub></sub>
