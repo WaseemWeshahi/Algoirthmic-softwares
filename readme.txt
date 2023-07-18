@@ -1,4 +1,4 @@
->> Optimization algorithm implementation
+** Optimization algorithm implementation
 
 The algorithm behind the attached program works the following:
 
