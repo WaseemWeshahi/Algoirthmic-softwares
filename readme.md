@@ -3,10 +3,12 @@
 #### [Problem Number 5](/problems_4_projects_2021.pdf)
 
 Scheduling with types to minimize the makespan.
-Input: An integer number of (identical) machines m ≥ 2. A set of n jobs J =
+
+- Input: An integer number of (identical) machines m ≥ 2. A set of n jobs J =
 {1, 2, . . . , n}, where every job j has an integer processing time p_j > 0 and a positive
 integer type t_j ∈ {1, 2, 3, . . . , 7}.
-Goal: Find a partition of the jobs of to the machines, J_1, J_2, . . . , J_m, such that every
+
+- Goal: Find a partition of the jobs of to the machines, J_1, J_2, . . . , J_m, such that every
 subset has jobs of at most three types (for any i there are three values k_i_1
 , k_i_2
 , k_i_3 ∈
@@ -15,7 +17,8 @@ subset has jobs of at most three types (for any i there are three values k_i_1
 , k_i_2
 , k_i_3
 }).
-Objective: Minimize max_{1≤i≤m} \sum{j∈J_i} p_j
+
+- Objective: Minimize max_{1≤i≤m} \sum{j∈J_i} p_j
 
 
 The algorithm behind the attached program works the following:
