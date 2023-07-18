@@ -1,3 +1,5 @@
+>> Optimization algorithm implementation
+
 The algorithm behind the attached program works the following:
 
 For the initial generation we use LPT and a "simple" method (J_i goes to i%m machine) to create first chromosomes, and generate the rest of the population randomly.
