@@ -5,20 +5,20 @@
 Scheduling with types to minimize the makespan.
 
 - Input: An integer number of (identical) machines m ≥ 2. A set of n jobs J =
-{1, 2, . . . , n}, where every job j has an integer processing time p~j > 0 and a positive
-integer type t~j ∈ {1, 2, 3, . . . , 7}.
+{1, 2, . . . , n}, where every job j has an integer processing time p<sub>j</sub> > 0 and a positive
+integer type t<sub>j</sub> ∈ {1, 2, 3, . . . , 7}.
 
-- Goal: Find a partition of the jobs of to the machines, J~1~, J~2~, . . . , J~m~, such that every
-subset has jobs of at most three types (for any i there are three values k~i~1
-, k~i~2
-, k~i~3 ∈
-{1, 2, 3, . . . , 7}, such that if j ∈ J_i
-, then t~j~ ∈ {k~i~1
-, k~i~2
-, k~i~3
+- Goal: Find a partition of the jobs of to the machines, J<sub>1</sub>, J<sub>2</sub>, . . . , J<sub>m</sub>, such that every
+subset has jobs of at most three types (for any i there are three values k<sub>i</sub><sub>1</sub>
+, k<sub>i</sub><sub>2</sub>
+, k<sub>i</sub><sub>3</sub> ∈
+{1, 2, 3, . . . , 7}, such that if j ∈ J<sub>i</sub>
+, then <sub>t</sub><sub>j</sub> ∈ {k<sub><sub>i<sub>1</sub></sub></sub>
+, k<sub><sub>i<sub>2</sub></sub></sub>
+, k<sub><sub>i<sub>3</sub></sub></sub>
 }).
 
-- Objective: Minimize max~{1≤i≤m}~ \sum{j∈J~i~} p~j~
+- Objective: Minimize max<sub>{1≤i≤m}</sub> \sum{j∈J<sub>i</sub>} p<sub>j</sub>
 
 
 The algorithm behind the attached program works the following:
